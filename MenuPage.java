@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 
@@ -22,41 +21,43 @@ public class MenuPage {
 
     
     menuPanel = new JPanel(); //menu panel instance
-    menuPanel.setBounds(0, 0, 250, 600);
     menuPanel.setBackground(Color.decode("#2c2a2a"));
+    menuPanel.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(20, 20, 5, 20);
 
     //styling the buttons 
-
+    
     homeButton = new JButton("Home");
-    homeButton.setBounds(50, 100, 150, 50);
     homeButton.setBackground(Color.decode("#FFFFFF"));
-    homeButton.setBorder(new LineBorder(Color.decode("#FFFFFF")));
     homeButton.setForeground(Color.decode("#FF914D"));
+    homeButton.setPreferredSize(new Dimension(100, 40));
 
     incomeButton = new JButton("Income");
-    incomeButton.setBounds(50, 200, 150, 50);
     incomeButton.setBackground(Color.decode("#FFFFFF"));
-    incomeButton.setBorder(new LineBorder(Color.decode("#FFFFFF")));
     incomeButton.setForeground(Color.decode("#FF914D"));
+    incomeButton.setPreferredSize(new Dimension(100, 40));
 
     expensesButton = new JButton("Expenses");
-    expensesButton.setBounds(50, 300, 150, 50);
     expensesButton.setBackground(Color.decode("#FFFFFF"));
-    expensesButton.setBorder(new LineBorder(Color.decode("#FFFFFF")));
     expensesButton.setForeground(Color.decode("#FF914D"));
+    expensesButton.setPreferredSize(new Dimension(100, 40));
 
     goalButton = new JButton("Goal");
-    goalButton.setBounds(50, 400, 150, 50);
     goalButton.setBackground(Color.decode("#FFFFFF"));
-    goalButton.setBorder(new LineBorder(Color.decode("#FFFFFF")));
     goalButton.setForeground(Color.decode("#FF914D"));
+    goalButton.setPreferredSize(new Dimension(100, 40));
 
     //styling buttons end ====
 
-    menuPanel.add(homeButton);
-    menuPanel.add(incomeButton);
-    menuPanel.add(expensesButton);
-    menuPanel.add(goalButton);
+    gbc.gridy = 0;
+    menuPanel.add(homeButton, gbc);
+    gbc.gridy = 1;
+    menuPanel.add(incomeButton, gbc);
+    gbc.gridy = 2;
+    menuPanel.add(expensesButton, gbc);
+    gbc.gridy = 3;
+    menuPanel.add(goalButton, gbc);
 
     }
 
