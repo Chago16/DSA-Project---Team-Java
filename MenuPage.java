@@ -24,7 +24,6 @@ public class MenuPage {
     menuPanel = new JPanel(); //menu panel instance
     menuPanel.setBounds(0, 0, 250, 600);
     menuPanel.setBackground(Color.decode("#2c2a2a"));
-    menuPanel.setLayout(null);
 
     //styling the buttons 
 

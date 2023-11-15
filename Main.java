@@ -28,9 +28,9 @@ public static void main(String[] args) {
 
     // menu panel instance start
 
-    JPanel menuPanel = new JPanel();
+    
     MenuPage mp = new MenuPage();
-    menuPanel.add(mp.menuPanel);
+    JPanel menuPanel = mp.menuPanel;
     mp.setCardLayout(cardLayout, mainPanel); //experimental
     mp.addListeners();
 
@@ -44,11 +44,12 @@ public static void main(String[] args) {
     mframe.setSize(1000, 600);
     mframe.setLocationRelativeTo(null);
     mframe.add(mainPanel);
-    mframe.setVisible(true);
+    
     
 
     mframe.add(mainPanel, BorderLayout.CENTER);
     mframe.add(menuPanel, BorderLayout.WEST);
+    mframe.setVisible(true);
     
     //whole gui end =====
 
