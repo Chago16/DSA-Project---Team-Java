@@ -10,6 +10,6 @@ public class GoalPage {
         JLabel hi = new JLabel("HI This is Goal Panel");
         goalPanel.add(hi);
 
-    }
-    
+    }   
+
 }
