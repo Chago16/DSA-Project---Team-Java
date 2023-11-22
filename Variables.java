@@ -9,8 +9,8 @@ public class Variables {
 
     public void updateToFile(String fileName) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            oos.writeDouble(55.0);
-            oos.writeDouble(45.78);
+            oos.writeDouble(pocketMoney);
+            oos.writeDouble(totalIncome);
             oos.writeDouble(totalExpenses);
             oos.writeDouble(savings);
         } catch (IOException e) {
