@@ -29,19 +29,5 @@ public class Variables {
         } 
     }
 
-    public static void main(String[] args) {
-        Variables myVariables = new Variables();
-        // Update variables to file
-        myVariables.updateToFile("Data.dat");
-
-        // Update variables from file
-        myVariables.updateFromFile("Data.dat");
-
-        // Test: Print values after reading from file
-        System.out.println("Pocket Money: " + myVariables.pocketMoney);
-        System.out.println("Total Income: " + myVariables.totalIncome);
-        System.out.println("Total Expenses: " + myVariables.totalExpenses);
-        System.out.println("Savings: " + myVariables.savings);
-    }
 
 }
