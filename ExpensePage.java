@@ -5,12 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -25,14 +24,16 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class ExpensePage {
-
     private JLabel totalExpenseLabel = new JLabel();
 
     public static JTable expTable = new JTable();
-    public static DefaultTableModel expModel = new DefaultTableModel();
-
+    public static DefaultTableModel expModel = new DefaultTableModel(new Object[][]{}, new Object[]{"Amount", "Label"}) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
     public JPanel expensePanel;
-
     public ExpensePage() {
 
         expensePanel = new JPanel();
