@@ -5,13 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -27,14 +25,18 @@ import javax.swing.table.DefaultTableModel;
 
 public class IncomePage {
 
+
     private JLabel totalIncomeLabel = new JLabel();
 
     public static JTable incTable = new JTable();
-    public static DefaultTableModel incModel = new DefaultTableModel();
-
+    public static DefaultTableModel incModel = new DefaultTableModel(new Object[][]{}, new Object[]{"Amount", "Label"}) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
 
     public JPanel incomePanel;
-
     public IncomePage() {
 
         incomePanel = new JPanel();
