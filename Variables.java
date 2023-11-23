@@ -2,13 +2,13 @@ import java.io.*;
 
 public class Variables {
     
-    double pocketMoney = 0;
-    double totalIncome = 0;
-    double totalExpenses = 0;
-    double savings = 0;
+    public static double pocketMoney = 0.0;
+    public static double totalIncome = 0.0;
+    public static double totalExpenses = 0.0;
+    public static double savings = 0.0;
 
     public void updateToFile(String fileName) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName, false))) {
             oos.writeDouble(pocketMoney);
             oos.writeDouble(totalIncome);
             oos.writeDouble(totalExpenses);

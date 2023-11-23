@@ -20,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class IncomePage {
 
+    private JLabel totalIncomeLabel = new JLabel();
+
     public JPanel incomePanel;
 
     public IncomePage() {
@@ -36,9 +38,11 @@ public class IncomePage {
         tablePanel.setLayout(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
 
-        JLabel totalIncomeLabel = new JLabel("Total Income: 0.00");
+        totalIncomeLabel = new JLabel("Total Income: 0.00");
         totalIncomeLabel.setFont(new Font("", Font.BOLD, 16));
         tablePanel.add(totalIncomeLabel, BorderLayout.SOUTH);
+
+        updateOnlyTotalIncome();
 
         JTable table = new JTable();
         Object[] columns = {"Amount", "Label"};
@@ -102,14 +106,20 @@ public class IncomePage {
                 String amountText = textAmount.getText();
 
                 if (isValidAmount(amountText)) {
+                    int amountInt = Integer.parseInt(amountText);
+
                     row[0] = amountText;
                     row[1] = textLabel.getText();
                     model.addRow(row);
 
+                    Variables.totalIncome += amountInt;
+                    Variables funcVar = new Variables(); // para lang magamit functions
+                    funcVar.updateToFile("Data.dat");
+
                     textAmount.setText("");
                     textLabel.setText("");
 
-                    updateTotalIncome(model, totalIncomeLabel);
+                    updateOnlyTotalIncome();
                 } else {
                     showError("Please enter a valid numeric amount.");
                 }
@@ -177,16 +187,14 @@ public class IncomePage {
         errorFrame.setVisible(true);
     }
 
-    private static void updateTotalIncome(DefaultTableModel model, JLabel totalIncomeLabel) {
-        double totalIncome = 0.0;
+    public void updateOnlyTotalIncome() {
+    
+        Variables variablesFunc = new Variables();
+        variablesFunc.updateFromFile("Data.dat");
+        totalIncomeLabel.setText("Total Income: " + Variables.totalIncome);
 
-        for (int row = 0; row < model.getRowCount(); row++) {
-            String amountText = (String) model.getValueAt(row, 0);
-            double amount = Double.parseDouble(amountText);
-            totalIncome += amount;
-        }
-
-        totalIncomeLabel.setText("Total Expense: " + String.format("%.2f", totalIncome));
     }
+
 }
 
+    

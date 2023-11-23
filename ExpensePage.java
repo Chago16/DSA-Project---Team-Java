@@ -20,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class ExpensePage {
 
+    private JLabel totalExpenseLabel = new JLabel();
+
     public JPanel expensePanel;
 
     public ExpensePage() {
@@ -36,9 +38,11 @@ public class ExpensePage {
         tablePanel.setLayout(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
 
-        JLabel totalExpenseLabel = new JLabel("Total Expense: 0.00");
+        totalExpenseLabel = new JLabel("Total Expense: 0.00");
         totalExpenseLabel.setFont(new Font("", Font.BOLD, 16));
         tablePanel.add(totalExpenseLabel, BorderLayout.SOUTH);
+
+        updateOnlyTotalExpense();
 
         JTable table = new JTable();
         Object[] columns = {"Amount", "Label"};
@@ -102,14 +106,20 @@ public class ExpensePage {
                 String amountText = textAmount.getText();
 
                 if (isValidAmount(amountText)) {
+                    int amountInt = Integer.parseInt(amountText);
+
                     row[0] = amountText;
                     row[1] = textLabel.getText();
                     model.addRow(row);
 
+                    Variables.totalExpenses += amountInt;
+                    Variables funcVar = new Variables(); // para lang magamit functions
+                    funcVar.updateToFile("Data.dat");
+
                     textAmount.setText("");
                     textLabel.setText("");
 
-                    updateTotalExpense(model, totalExpenseLabel);
+                    updateOnlyTotalExpense();
                 } else {
                     showError("Please enter a valid numeric amount.");
                 }
@@ -177,16 +187,12 @@ public class ExpensePage {
         errorFrame.setVisible(true);
     }
 
-    private static void updateTotalExpense(DefaultTableModel model, JLabel totalExpenseLabel) {
-        double totalExpenses = 0.0;
+    public void updateOnlyTotalExpense() {
+    
+        Variables variablesFunc = new Variables();
+        variablesFunc.updateFromFile("Data.dat");
+        totalExpenseLabel.setText("Total Expense: " + Variables.totalExpenses);
 
-        for (int row = 0; row < model.getRowCount(); row++) {
-            String amountText = (String) model.getValueAt(row, 0);
-            double amount = Double.parseDouble(amountText);
-            totalExpenses += amount;
-        }
-
-        totalExpenseLabel.setText("Total Expense: " + String.format("%.2f", totalExpenses));
     }
 }
 

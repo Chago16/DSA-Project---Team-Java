@@ -6,6 +6,9 @@ public class Main {
 
 public static void main(String[] args) {
 
+    Variables variablesFunc = new Variables();
+    variablesFunc.updateFromFile("Data.dat"); //This is to load the data from file
+
     //creates a card layout for the mainPanel only start
     CardLayout cardLayout = new CardLayout();
     JPanel mainPanel = new JPanel(cardLayout); //instance of main panel
