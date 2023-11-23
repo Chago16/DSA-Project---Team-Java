@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -104,13 +108,16 @@ public class IncomePage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String amountText = textAmount.getText();
+                String amountLabel = textLabel.getText();
 
                 if (isValidAmount(amountText)) {
                     int amountInt = Integer.parseInt(amountText);
 
                     row[0] = amountText;
-                    row[1] = textLabel.getText();
+                    row[1] = amountLabel;
                     model.addRow(row);
+
+                    toIncomeCSV(amountText, amountLabel, "IncomeTable.csv");
 
                     Variables.totalIncome += amountInt;
                     Variables funcVar = new Variables(); // para lang magamit functions
@@ -194,6 +201,17 @@ public class IncomePage {
         totalIncomeLabel.setText("Total Income: " + Variables.totalIncome);
 
     }
+
+    public static void toIncomeCSV(String row0, String row1, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+                writer.write(row0 + "," + row1);
+                writer.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    
 
 }
 
