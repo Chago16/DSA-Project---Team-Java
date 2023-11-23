@@ -5,9 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -24,6 +27,9 @@ import javax.swing.table.DefaultTableModel;
 public class ExpensePage {
 
     private JLabel totalExpenseLabel = new JLabel();
+
+    public static JTable expTable = new JTable();
+    public static DefaultTableModel expModel = new DefaultTableModel();
 
     public JPanel expensePanel;
 
@@ -47,16 +53,14 @@ public class ExpensePage {
 
         updateOnlyTotalExpense();
 
-        JTable table = new JTable();
         Object[] columns = {"Amount", "Label"};
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
-        table.setModel(model);
-        table.setBackground(Color.LIGHT_GRAY);
-        table.setForeground(Color.black);
+        expModel.setColumnIdentifiers(columns);
+        expTable.setModel(expModel);
+        expTable.setBackground(Color.LIGHT_GRAY);
+        expTable.setForeground(Color.black);
         Font font = new Font("", Font.BOLD, 16);
-        table.setFont(font);
-        table.setRowHeight(30);
+        expTable.setFont(font);
+        expTable.setRowHeight(30);
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
@@ -68,7 +72,7 @@ public class ExpensePage {
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
 
-        JScrollPane pane = new JScrollPane(table);
+        JScrollPane pane = new JScrollPane(expTable);
         tablePanel.add(pane, BorderLayout.CENTER);
 
         GroupLayout layout = new GroupLayout(expensePanel);
@@ -114,7 +118,7 @@ public class ExpensePage {
 
                     row[0] = amountText;
                     row[1] = amountLabel;
-                    model.addRow(row);
+                    expModel.addRow(row);
 
                     toExpenseCSV(amountText, amountLabel, "ExpensesTable.csv");
 
@@ -133,7 +137,7 @@ public class ExpensePage {
         });
 
         // get selected row data From table to textfields
-        table.addMouseListener(new MouseAdapter() {
+        expTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Add your logic here if needed
@@ -205,6 +209,30 @@ public class ExpensePage {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
                 writer.write(row0 + "," + row1);
                 writer.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public static void loadExpCSVToTable(String fileName) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
+        
+                    // Check if the line has valid content (non-empty)
+                    if (parts.length == 2) {
+                        Object[] rowData = new Object[2];
+                        rowData[0] = parts[0].trim();
+                        rowData[1] = parts[1].trim();
+        
+                        
+                        expModel.addRow(rowData); // Add the row to the table model
+                    }
+                }
+        
+                // Refresh the table view by resetting the table model
+                ((DefaultTableModel) expTable.getModel()).fireTableDataChanged();
             } catch (IOException e) {
                 e.printStackTrace();
             }

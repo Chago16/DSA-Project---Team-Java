@@ -9,6 +9,9 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -25,6 +28,10 @@ import javax.swing.table.DefaultTableModel;
 public class IncomePage {
 
     private JLabel totalIncomeLabel = new JLabel();
+
+    public static JTable incTable = new JTable();
+    public static DefaultTableModel incModel = new DefaultTableModel();
+
 
     public JPanel incomePanel;
 
@@ -48,16 +55,14 @@ public class IncomePage {
 
         updateOnlyTotalIncome();
 
-        JTable table = new JTable();
         Object[] columns = {"Amount", "Label"};
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
-        table.setModel(model);
-        table.setBackground(Color.LIGHT_GRAY);
-        table.setForeground(Color.black);
+        incModel.setColumnIdentifiers(columns);
+        incTable.setModel(incModel);
+        incTable.setBackground(Color.LIGHT_GRAY);
+        incTable.setForeground(Color.black);
         Font font = new Font("", Font.BOLD, 16);
-        table.setFont(font);
-        table.setRowHeight(30);
+        incTable.setFont(font);
+        incTable.setRowHeight(30);
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
@@ -69,7 +74,7 @@ public class IncomePage {
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
 
-        JScrollPane pane = new JScrollPane(table);
+        JScrollPane pane = new JScrollPane(incTable);
         tablePanel.add(pane, BorderLayout.CENTER);
 
         GroupLayout layout = new GroupLayout(incomePanel);
@@ -115,7 +120,7 @@ public class IncomePage {
 
                     row[0] = amountText;
                     row[1] = amountLabel;
-                    model.addRow(row);
+                    incModel.addRow(row);
 
                     toIncomeCSV(amountText, amountLabel, "IncomeTable.csv");
 
@@ -134,7 +139,7 @@ public class IncomePage {
         });
 
         // get selected row data From table to textfields
-        table.addMouseListener(new MouseAdapter() {
+        incTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Add your logic here if needed
@@ -210,6 +215,32 @@ public class IncomePage {
                 e.printStackTrace();
             }
         }
+
+        public static void loadIncCSVToTable(String fileName) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
+        
+                    // Check if the line has valid content (non-empty)
+                    if (parts.length == 2) {
+                        Object[] rowData = new Object[2];
+                        rowData[0] = parts[0].trim();
+                        rowData[1] = parts[1].trim();
+        
+                        
+                        incModel.addRow(rowData); // Add the row to the table model
+                    }
+                }
+        
+                // Refresh the table view by resetting the table model
+                ((DefaultTableModel) incTable.getModel()).fireTableDataChanged();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
 
     
 

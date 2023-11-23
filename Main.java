@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
+
 public class Main {
 
 public static void main(String[] args) {
@@ -55,6 +56,9 @@ public static void main(String[] args) {
     mframe.setVisible(true);
     
     //whole gui end =====
+
+    IncomePage.loadIncCSVToTable("IncomeTable.csv");
+    ExpensePage.loadExpCSVToTable("ExpensesTable.csv");
 
 }
 }
