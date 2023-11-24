@@ -1,23 +1,25 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
-import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 public class SplashScreen extends JWindow {
 
     public SplashScreen() {
         JPanel content = new JPanel(new BorderLayout());
-        content.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        
+        // Set the orange line border
+        content.setBorder(new LineBorder(Color.decode("#FF914D"), 1));
         setContentPane(content);
 
-        JLabel label = new JLabel("Cofferbliss", SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.PLAIN, 30));
+        // Load the image from file
+        ImageIcon icon = new ImageIcon("Logo.png");
+        JLabel label = new JLabel(icon);
         content.add(label, BorderLayout.CENTER);
 
         pack();
