@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,19 +23,43 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+
 
 public class IncomePage {
-
-
     private JLabel totalIncomeLabel = new JLabel();
 
-    public static JTable incTable = new JTable();
     public static DefaultTableModel incModel = new DefaultTableModel(new Object[][]{}, new Object[]{"Amount", "Label"}) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
+
+    public static JTable incTable = new JTable(incModel) {
+        @Override
+        public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+            Component comp = super.prepareRenderer(renderer, row, column);
+            comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
+            return comp;
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+        {
+        // Set the font size for the table cells
+        Font cellFont = new Font("", Font.PLAIN, 16); // You can adjust the size (16) as needed
+        incTable.setFont(cellFont);
+
+        // Set the font size for the column headers
+        Font headerFont = new Font("", Font.BOLD, 20); // You can adjust the size (20) as needed
+        JTableHeader header = incTable.getTableHeader();
+        header.setFont(headerFont);
+    }
 
     public JPanel incomePanel;
     public IncomePage() {
@@ -52,7 +77,7 @@ public class IncomePage {
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
 
         totalIncomeLabel = new JLabel("Total Income: 0.00");
-        totalIncomeLabel.setFont(new Font("", Font.BOLD, 16));
+        totalIncomeLabel.setFont(new Font("", Font.BOLD, 20));
         tablePanel.add(totalIncomeLabel, BorderLayout.SOUTH);
 
         updateOnlyTotalIncome();
@@ -68,13 +93,21 @@ public class IncomePage {
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
+        Font textFieldFont = new Font("", Font.PLAIN, 18); 
+        textAmount.setFont(textFieldFont);
+        textLabel.setFont(textFieldFont);
 
         JLabel labelAmount = new JLabel("Amount:");
         JLabel labelLabel = new JLabel("Label:");
+        Font labelFont = new Font("", Font.BOLD, 18);
+        labelAmount.setFont(labelFont);
+        labelLabel.setFont(labelFont);
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
+        Font buttonFont = new Font("", Font.BOLD, 18); 
+        btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(incTable);
         tablePanel.add(pane, BorderLayout.CENTER);
