@@ -1,10 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -59,13 +67,7 @@ public class Main {
             mframe.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    int choice = JOptionPane.showConfirmDialog(mframe, "Do you really want to exit?", "Exit",
-                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-                    if (choice == JOptionPane.YES_OPTION) {
-                        // Save any data or perform cleanup before exiting
-                        System.exit(0);
-                    }
+                    showExitDialog(mframe);
                 }
             });
 
@@ -79,5 +81,49 @@ public class Main {
             // Close the splash screen
             splashScreen.dispose();
         });
+    }
+
+    private static void showExitDialog(JFrame parentFrame) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel("Do you really want to exit?");
+        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.add(label, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        JButton yesButton = new JButton("Yes");
+        yesButton.setBackground(Color.decode("#DDDDD0"));
+        yesButton.setForeground(Color.BLACK);
+
+        JButton noButton = new JButton("No");
+        noButton.setBackground(Color.decode("#FF914D"));
+        noButton.setForeground(Color.WHITE);
+
+        noButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JDialog) noButton.getTopLevelAncestor()).dispose();
+            }
+        });
+
+        yesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        buttonPanel.add(yesButton);
+        buttonPanel.add(noButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JDialog dialog = new JDialog(parentFrame, "Exit", true);
+        dialog.getContentPane().add(panel);
+        dialog.setSize(new Dimension(300, 150));
+        dialog.setLocationRelativeTo(parentFrame);
+        dialog.setVisible(true);
     }
 }
