@@ -54,7 +54,8 @@ public class MenuPage {
     }
 
     private JButton createRoundedButton(String buttonText, String iconName) {
-        JButton button = new RoundButton(buttonText);
+        JButton button = new RoundButtonMenu(buttonText);
+    
         // Load the icon from the file or resource
         try {
             ImageIcon icon = new ImageIcon(iconName);

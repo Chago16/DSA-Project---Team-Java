@@ -6,11 +6,11 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JButton;
 
-class RoundButton extends JButton {
+class RoundButtonMenu extends JButton {
     private static final int ARC_WIDTH = 15;
     private static final int ARC_HEIGHT = 15;
 
-    public RoundButton(String label) {
+    public RoundButtonMenu(String label) {
         super(label);
         setFocusPainted(false);
         setOpaque(false);
