@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,17 +23,44 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+
 
 public class ExpensePage {
     private JLabel totalExpenseLabel = new JLabel();
 
-    public static JTable expTable = new JTable();
-    public static DefaultTableModel expModel = new DefaultTableModel(new Object[][]{}, new Object[]{"Amount", "Label"}) {
+    public static DefaultTableModel expModel = new DefaultTableModel(new Object[][] {}, new Object[] { "Amount", "Label" }) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
+
+    public static JTable expTable = new JTable(expModel) {
+        @Override
+        public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+            Component comp = super.prepareRenderer(renderer, row, column);
+            comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
+            return comp;
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+        {
+        // Set the font size for the table cells
+        Font cellFont = new Font("", Font.BOLD, 16); // You can adjust the size (16) as needed
+        expTable.setFont(cellFont);
+
+        // Set the font size for the column headers
+        Font headerFont = new Font("", Font.BOLD, 20); // You can adjust the size (20) as needed
+        JTableHeader header = expTable.getTableHeader();
+        header.setFont(headerFont);
+    }
+
     public JPanel expensePanel;
     public ExpensePage() {
 
@@ -49,7 +77,7 @@ public class ExpensePage {
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
 
         totalExpenseLabel = new JLabel("Total Expense: 0.00");
-        totalExpenseLabel.setFont(new Font("", Font.BOLD, 16));
+        totalExpenseLabel.setFont(new Font("", Font.BOLD, 20));
         tablePanel.add(totalExpenseLabel, BorderLayout.SOUTH);
 
         updateOnlyTotalExpense();
@@ -59,19 +87,27 @@ public class ExpensePage {
         expTable.setModel(expModel);
         expTable.setBackground(Color.LIGHT_GRAY);
         expTable.setForeground(Color.black);
-        Font font = new Font("", Font.BOLD, 16);
+        Font font = new Font("", Font.PLAIN, 16);
         expTable.setFont(font);
         expTable.setRowHeight(30);
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
+        Font textFieldFont = new Font("", Font.PLAIN, 18); 
+        textAmount.setFont(textFieldFont);
+        textLabel.setFont(textFieldFont);
 
         JLabel labelAmount = new JLabel("Amount:");
         JLabel labelLabel = new JLabel("Label:");
+        Font labelFont = new Font("", Font.BOLD, 18);
+        labelAmount.setFont(labelFont);
+        labelLabel.setFont(labelFont);
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
+        Font buttonFont = new Font("", Font.BOLD, 18); 
+        btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(expTable);
         tablePanel.add(pane, BorderLayout.CENTER);
