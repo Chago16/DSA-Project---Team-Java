@@ -55,7 +55,7 @@ public class MenuPage {
 
     private JButton createRoundedButton(String buttonText, String iconName) {
         JButton button = new RoundButton(buttonText);
-
+    
         // Load the icon from the file or resource
         try {
             ImageIcon icon = new ImageIcon(iconName);
@@ -64,12 +64,15 @@ public class MenuPage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+    
         button.setBackground(Color.decode("#FFFFFF"));
         button.setPreferredSize(new Dimension(150, 40)); // Adjust the width value here
-
+        button.setContentAreaFilled(false); // Make the button not filled
+        button.setBorderPainted(false); // Remove the border
+    
         return button;
     }
+    
 
     // card layout instance on menu
     public void setCardLayout(CardLayout cardLayout, JPanel mainPanel) {
