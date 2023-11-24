@@ -24,40 +24,37 @@ public class MenuPage {
     public JPanel menuPanel;
 
     public MenuPage() {
-        // make the menu setup here
         menuPanel = new JPanel(); // menu panel instance
         menuPanel.setBackground(Color.decode("#2c2a2a"));
         menuPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 20, 5, 20); // Adjusted left margin
-
+        gbc.insets = new Insets(10, 20, 5, 20); 
         // Add image above buttons
         ImageIcon logoIcon = new ImageIcon("LogoMenuPage.png");
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(new ImageIcon(logoIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
+        logoLabel.setIcon(new ImageIcon(logoIcon.getImage().getScaledInstance(200, 80, Image.SCALE_SMOOTH)));
         gbc.gridy = 0;
         menuPanel.add(logoLabel, gbc);
 
-
         // styling the buttons
-        homeButton = createButton("Home", "home.png");
-        incomeButton = createButton("Income", "income.png"); // Replace "income.png" with the actual icon file name
-        expensesButton = createButton("Expenses", "expenses.png"); // Replace "expenses.png" with the actual icon file name
-        goalButton = createButton("Goal", "goal.png"); // Replace "goal.png" with the actual icon file name
+        homeButton = createRoundedButton("Home", "home.png");
+        incomeButton = createRoundedButton("Income", "income.png"); // Replace "income.png" with the actual icon file name
+        expensesButton = createRoundedButton("Expenses", "expenses.png"); // Replace "expenses.png" with the actual icon file name
+        goalButton = createRoundedButton("Goal", "goal.png"); // Replace "goal.png" with the actual icon file name
 
         // Add buttons to the menu panel
-        gbc.gridy = 2;
+        gbc.gridy = 1; // Adjusted the starting position for buttons
         menuPanel.add(homeButton, gbc);
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         menuPanel.add(incomeButton, gbc);
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         menuPanel.add(expensesButton, gbc);
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         menuPanel.add(goalButton, gbc);
     }
 
-    private JButton createButton(String buttonText, String iconName) {
-        JButton button = new JButton(buttonText);
+    private JButton createRoundedButton(String buttonText, String iconName) {
+        JButton button = new RoundButton(buttonText);
 
         // Load the icon from the file or resource
         try {
@@ -69,7 +66,6 @@ public class MenuPage {
         }
 
         button.setBackground(Color.decode("#FFFFFF"));
-        button.setForeground(Color.decode("#FF914D"));
         button.setPreferredSize(new Dimension(150, 40)); // Adjust the width value here
 
         return button;
