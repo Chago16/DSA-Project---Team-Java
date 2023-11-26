@@ -27,11 +27,11 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             Variables variablesFunc = new Variables();
             variablesFunc.updateFromFile("Data.dat");
-
+        
             // creates a card layout for the mainPanel only start
             CardLayout cardLayout = new CardLayout();
             JPanel mainPanel = new JPanel(cardLayout); // instance of the main panel
-
+        
             HomePage hp = new HomePage();
             mainPanel.add(hp.homePanel, "HomePage");
             IncomePage ip = new IncomePage();
@@ -40,7 +40,10 @@ public class Main {
             mainPanel.add(ep.expensePanel, "ExpensePage");
             GoalPage gp = new GoalPage();
             mainPanel.add(gp.goalPanel, "GoalPage");
-
+        
+            // Update available balance before showing HomePage
+            hp.updateAvailableBalance();
+        
             cardLayout.show(mainPanel, "HomePage");
 
             // mainPanel instance end =====
@@ -77,6 +80,8 @@ public class Main {
 
             IncomePage.loadIncCSVToTable("IncomeTable.csv");
             ExpensePage.loadExpCSVToTable("ExpensesTable.csv");
+
+            
 
             // Close the splash screen
             splashScreen.dispose();
