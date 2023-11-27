@@ -237,9 +237,7 @@ public class IncomePage {
         errorFrame.setSize(300, 100);
         errorFrame.setLocationRelativeTo(null);
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Use Poppins font for error message
-        Font errorMessageFont = new Font("Poppins", Font.PLAIN, 13); // Change "Poppins" and size as needed
+        Font errorMessageFont = new Font("Poppins", Font.PLAIN, 14); // Change "Poppins" and size as needed
 
         JLabel errorMessage = new JLabel(message);
         errorMessage.setFont(errorMessageFont);
