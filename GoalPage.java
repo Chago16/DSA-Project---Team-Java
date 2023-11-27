@@ -208,9 +208,23 @@ public class GoalPage {
                 IncomePage.updateOnlyTotalIncome();
                 HomePage.updateAvailableBalance();
                 IncomePage.fromSavingsToInc(amountString);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Insufficient amount", "Warning", JOptionPane.WARNING_MESSAGE);
-                }
+            } else {
+                // Create a custom panel for the warning message
+                JPanel warningPanel = new JPanel(new BorderLayout());
+                JLabel warningMessage = new JLabel("Insufficient amount");
+                warningMessage.setFont(new Font("Poppins", Font.PLAIN, 14)); // Set font for the warning message
+                warningMessage.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                warningMessage.setForeground(Color.RED); // Set text color to red
+            
+                // Set background color of the warning panel to white
+                warningPanel.setBackground(Color.WHITE);
+            
+                // Add the warning message label to the warning panel
+                warningPanel.add(warningMessage, BorderLayout.CENTER);
+            
+                // Show the warning dialog
+                JOptionPane.showOptionDialog(null, warningPanel, "Warning", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{}, null);
+            }
 
                 
             } else if (transactionType.equals("Deposit")) {
