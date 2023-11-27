@@ -39,7 +39,7 @@ public class Variables {
             
             // Trigger the update in HomePage
             if (homePage != null) {
-                homePage.updateAvailableBalance();
+                HomePage.updateAvailableBalance();
             }
         } catch (IOException e) {
             e.printStackTrace();

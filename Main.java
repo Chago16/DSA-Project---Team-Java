@@ -42,7 +42,7 @@ public class Main {
             mainPanel.add(gp.goalPanel, "GoalPage");
         
             // Update available balance before showing HomePage
-            hp.updateAvailableBalance();
+            HomePage.updateAvailableBalance();
         
             cardLayout.show(mainPanel, "HomePage");
 

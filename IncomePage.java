@@ -167,6 +167,8 @@ public class IncomePage {
                     textLabel.setText("");
 
                     updateOnlyTotalIncome();
+                    
+                    HomePage.updateAvailableBalance();
                 } else {
                     showError("Please enter a valid numeric amount.");
                 }

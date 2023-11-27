@@ -167,6 +167,8 @@ public class ExpensePage {
                     textLabel.setText("");
 
                     updateOnlyTotalExpense();
+
+                    HomePage.updateAvailableBalance();
                 } else {
                     showError("Please enter a valid numeric amount.");
                 }

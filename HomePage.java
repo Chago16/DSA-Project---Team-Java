@@ -14,7 +14,7 @@ public class HomePage {
 
     // public instance of the main frame for calling it on the main file
     public JPanel homePanel;
-    private JLabel availBalLabel;
+    public static JLabel availBalLabel;
 
     public HomePage() {
         // make the home page here
@@ -56,7 +56,7 @@ public class HomePage {
         availbudgPanel.add(availbudgLabel, BorderLayout.CENTER);
 
         // Creating "Available Balance" label
-         availBalLabel = new JLabel("Available Balance: 0.00");
+        availBalLabel = new JLabel("Available Balance: 0.00");
         availBalLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         availBalLabel.setForeground(Color.decode("#FFFFFF"));
         availbudgPanel.add(availBalLabel, BorderLayout.SOUTH);
@@ -65,8 +65,10 @@ public class HomePage {
         // Adding the dashboard to the center of homePanel
         homePanel.add(dashboardPanel, BorderLayout.CENTER);
     }
-    public void updateAvailableBalance() {
-        double availableBalance = Variables.totalIncome - Variables.totalExpenses;
-        availBalLabel.setText("Available Balance: " + availableBalance);
+    public static void updateAvailableBalance() {
+        Variables.pocketMoney = Variables.totalIncome - Variables.totalExpenses;
+        Variables varUse = new Variables();
+        varUse.updateToFile("Data.dat");
+        availBalLabel.setText("Available Balance: " + Variables.pocketMoney);
     }
 }
