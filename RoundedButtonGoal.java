@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
-import javax.swing.UIManager;
 
 public class RoundedButtonGoal extends JButton {
     public RoundedButtonGoal(String text) {
@@ -32,7 +31,7 @@ public class RoundedButtonGoal extends JButton {
     }
 
     private void setDefaultBackground() {
-        setBackground(UIManager.getColor("Button.background")); // Set the default background color
+        setBackground(Color.decode("#FFFFFF")); // Set the default background color
         repaint();
     }
 
