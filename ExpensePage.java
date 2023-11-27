@@ -226,7 +226,7 @@ public class ExpensePage {
         errorFrame.setLocationRelativeTo(null);
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     
-        Font errorMessageFont = new Font("Poppins", Font.PLAIN, 13); 
+        Font errorMessageFont = new Font("Poppins", Font.PLAIN, 14);
         JLabel errorMessage = new JLabel(message);
         errorMessage.setFont(errorMessageFont);
         errorMessage.setForeground(Color.RED);
