@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -10,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 public class GoalPage {
 
@@ -43,10 +46,10 @@ public class GoalPage {
 
         // Creating editable text field for total savings
         totalSavingsField = new JLabel();
-        totalSavingsField.setFont(new Font("Arial", Font.BOLD, 40));
+        totalSavingsField.setFont(new Font("Poppins", Font.BOLD, 40)); // Change font to Poppins
         totalSavingsField.setBackground(totalSavingsPanel.getBackground());
         totalSavingsField.setForeground(Color.WHITE); // Set text color to white
-        totalSavingsField.setBorder(BorderFactory.createEmptyBorder(0, 100, 50, 100));
+        totalSavingsField.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
 
         // Set layout for totalSavingsPanel
         totalSavingsPanel.setLayout(new BorderLayout());
@@ -54,13 +57,13 @@ public class GoalPage {
 
         // Creating "Withdraw" button
         JButton withdrawButton = new JButton("Withdraw");
-        withdrawButton.setFont(new Font("Arial", Font.PLAIN, 24));
+        withdrawButton.setFont(new Font("Poppins", Font.PLAIN, 24)); // Change font to Poppins
         withdrawButton.setBackground(Color.decode("#FFFFFF"));
         withdrawButton.addActionListener(e -> showWithdrawDialog());
 
         // Creating "Deposit" button
         JButton depositButton = new JButton("Deposit");
-        depositButton.setFont(new Font("Arial", Font.PLAIN, 24));
+        depositButton.setFont(new Font("Poppins", Font.PLAIN, 24)); // Change font to Poppins
         depositButton.setBackground(Color.decode("#FFFFFF"));
         depositButton.addActionListener(e -> showDepositDialog());
 
@@ -82,6 +85,9 @@ public class GoalPage {
         panel.add(new JLabel("Enter the amount to withdraw:"), BorderLayout.NORTH);
         panel.add(userInputField, BorderLayout.CENTER);
 
+        // Set font for the dialog
+        setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 14))); // Change font to Poppins
+
         int result = JOptionPane.showConfirmDialog(null, panel, "Withdraw Transaction",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
@@ -95,6 +101,9 @@ public class GoalPage {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Enter the amount to deposit:"), BorderLayout.NORTH);
         panel.add(userInputField, BorderLayout.CENTER);
+
+        // Set font for the dialog
+        setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 14))); // Change font to Poppins
 
         int result = JOptionPane.showConfirmDialog(null, panel, "Deposit Transaction",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -161,5 +170,16 @@ public class GoalPage {
         totalSavingsField.setText("Total Savings: " + Variables.savings);
 
     }
-}
 
+    // Method to set the font for the dialog
+    private static void setUIFont(FontUIResource font) {
+        Enumeration<?> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource) {
+                UIManager.put(key, font);
+            }
+        }
+    }
+}

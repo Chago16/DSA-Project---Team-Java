@@ -1,15 +1,21 @@
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.util.Enumeration;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
+
 
 public class MenuPage {
 
@@ -24,11 +30,14 @@ public class MenuPage {
     public JPanel menuPanel;
 
     public MenuPage() {
+        setUIFont(new FontUIResource(new Font("Arial", Font.PLAIN, 12)));  // Set a default font for MenuPage
+
         menuPanel = new JPanel(); // menu panel instance
         menuPanel.setBackground(Color.decode("#2c2a2a"));
         menuPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 20, 5, 20); 
+
         // Add image above buttons
         ImageIcon logoIcon = new ImageIcon("pictures/LogoMenuPage.png");
         JLabel logoLabel = new JLabel();
@@ -83,5 +92,18 @@ public class MenuPage {
         expensesButton.addActionListener(e -> cardLayout.show(mainPanel, "ExpensePage"));
         goalButton.addActionListener(e -> cardLayout.show(mainPanel, "GoalPage"));
         // Add action listeners for other buttons as needed
+    }
+
+// Set font for MenuPage components
+    private static void setUIFont(FontUIResource font) {
+        UIDefaults defaults = UIManager.getDefaults();
+        Enumeration<Object> keys = defaults.keys();
+        while (keys.hasMoreElements()) {
+        Object key = keys.nextElement();
+        Object value = defaults.get(key);
+        if (value instanceof FontUIResource) {
+            defaults.put(key, font);
+            }
+        }
     }
 }

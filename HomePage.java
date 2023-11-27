@@ -2,8 +2,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -17,7 +20,10 @@ public class HomePage {
     public static JLabel availBalLabel;
 
     public HomePage() {
-        // make the home page here
+        // Load the Poppins font
+        Font poppinsFont = loadPoppinsFont();
+
+        // Make the home page here
         homePanel = new JPanel();
         homePanel.setLayout(new BorderLayout()); // Set layout manager to BorderLayout
         JPanel dashboardPanel = new JPanel(new GridBagLayout());
@@ -46,7 +52,7 @@ public class HomePage {
 
         // Creating "Available Budget" label
         JLabel availbudgLabel = new JLabel("Available Budget");
-        availbudgLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        availbudgLabel.setFont(poppinsFont.deriveFont(Font.BOLD, 25));
         availbudgLabel.setForeground(Color.decode("#FFFFFF"));
         availbudgLabel.setBorder(BorderFactory.createEmptyBorder(30, 5, 20, 30));
 
@@ -57,14 +63,25 @@ public class HomePage {
 
         // Creating "Available Balance" label
         availBalLabel = new JLabel("Available Balance: 0.00");
-        availBalLabel.setFont(new Font("Arial", Font.BOLD, 25));
+        availBalLabel.setFont(poppinsFont.deriveFont(Font.BOLD, 20));
         availBalLabel.setForeground(Color.decode("#FFFFFF"));
         availbudgPanel.add(availBalLabel, BorderLayout.SOUTH);
         availBalLabel.setBorder(BorderFactory.createEmptyBorder(0, 400, 30, 30));
-        
+
         // Adding the dashboard to the center of homePanel
         homePanel.add(dashboardPanel, BorderLayout.CENTER);
     }
+
+    private Font loadPoppinsFont() {
+        try {
+            // Load Poppins font from the file
+            return Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Poppins-Regular.ttf"));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+            return new Font("Arial", Font.PLAIN, 12); // Fallback font
+        }
+    }
+
     public static void updateAvailableBalance() {
         Variables.pocketMoney = Variables.totalIncome - Variables.totalExpenses;
         Variables varUse = new Variables();

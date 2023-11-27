@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
-
 public class ExpensePage {
     private static JLabel totalExpenseLabel = new JLabel();
 
@@ -42,31 +41,21 @@ public class ExpensePage {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
             Component comp = super.prepareRenderer(renderer, row, column);
             comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
-            // Set the font for the entire row to bold
-            Font boldFont = new Font("", Font.BOLD, 16);
-            comp.setFont(boldFont);
-
-            // Set the font for specific cells (e.g., columns 0 and 1) to plain
-            if (column == 0 || column == 1) {
-            Font plainFont = new Font("", Font.PLAIN, 16);
-            comp.setFont(plainFont);
-    }
-
-    return comp;
-}
+            return comp;
+        }
 
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
-        {
+    {
         // Set the font size for the table cells
-        Font cellFont = new Font("", Font.PLAIN, 16); // You can adjust the size (16) as needed
+        Font cellFont = new Font("Poppins", Font.PLAIN, 16); // Change "Poppins" as needed
         expTable.setFont(cellFont);
 
         // Set the font size for the column headers
-        Font headerFont = new Font("", Font.BOLD, 20); // You can adjust the size (20) as needed
+        Font headerFont = new Font("Poppins", Font.BOLD, 20); // Change "Poppins" as needed
         JTableHeader header = expTable.getTableHeader();
         header.setFont(headerFont);
     }
@@ -78,7 +67,7 @@ public class ExpensePage {
         expensePanel.setLayout(new BorderLayout());
 
         JLabel label = new JLabel("Welcome to the Expenses Page");
-        label.setFont(new Font("Arial", Font.PLAIN, 30));
+        label.setFont(new Font("Poppins", Font.PLAIN, 30)); // Change "Poppins" as needed
         label.setHorizontalAlignment(JLabel.CENTER);
         expensePanel.add(label, BorderLayout.NORTH);
 
@@ -87,7 +76,7 @@ public class ExpensePage {
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
 
         totalExpenseLabel = new JLabel("Total Expense: 0.00");
-        totalExpenseLabel.setFont(new Font("", Font.BOLD, 20));
+        totalExpenseLabel.setFont(new Font("Poppins", Font.BOLD, 20)); // Change "Poppins" as needed
         tablePanel.add(totalExpenseLabel, BorderLayout.SOUTH);
 
         updateOnlyTotalExpense();
@@ -97,26 +86,26 @@ public class ExpensePage {
         expTable.setModel(expModel);
         expTable.setBackground(Color.LIGHT_GRAY);
         expTable.setForeground(Color.black);
-        Font font = new Font("", Font.PLAIN, 16);
+        Font font = new Font("Poppins", Font.PLAIN, 16); // Change "Poppins" as needed
         expTable.setFont(font);
         expTable.setRowHeight(30);
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
-        Font textFieldFont = new Font("", Font.PLAIN, 18); 
+        Font textFieldFont = new Font("Poppins", Font.PLAIN, 18); // Change "Poppins" as needed
         textAmount.setFont(textFieldFont);
         textLabel.setFont(textFieldFont);
 
         JLabel labelAmount = new JLabel("Amount:");
         JLabel labelLabel = new JLabel("Label:");
-        Font labelFont = new Font("", Font.BOLD, 18);
+        Font labelFont = new Font("Poppins", Font.BOLD, 18); // Change "Poppins" as needed
         labelAmount.setFont(labelFont);
         labelLabel.setFont(labelFont);
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
-        Font buttonFont = new Font("", Font.BOLD, 18); 
+        Font buttonFont = new Font("Poppins", Font.BOLD, 18); // Change "Poppins" as needed
         btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(expTable);
@@ -236,18 +225,21 @@ public class ExpensePage {
         errorFrame.setSize(300, 100);
         errorFrame.setLocationRelativeTo(null);
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+    
+        Font errorMessageFont = new Font("Poppins", Font.PLAIN, 13); 
         JLabel errorMessage = new JLabel(message);
+        errorMessage.setFont(errorMessageFont);
         errorMessage.setForeground(Color.RED);
         errorMessage.setHorizontalAlignment(JLabel.CENTER);
-
+    
         errorFrame.add(errorMessage);
-
+    
         errorFrame.setVisible(true);
     }
+    
 
     public static void updateOnlyTotalExpense() {
-    
+
         Variables variablesFunc = new Variables();
         variablesFunc.updateFromFile("Data.dat");
         totalExpenseLabel.setText("Total Expense: " + Variables.totalExpenses);
@@ -256,49 +248,44 @@ public class ExpensePage {
 
     public static void toExpenseCSV(String row0, String row1, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-                writer.write(row0 + "," + row1);
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writer.write(row0 + "," + row1);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        public static void loadExpCSVToTable(String fileName) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
-        
-                    // Check if the line has valid content (non-empty)
-                    if (parts.length == 2) {
-                        Object[] rowData = new Object[2];
-                        rowData[0] = parts[0].trim();
-                        rowData[1] = parts[1].trim();
-        
-                        
-                        expModel.addRow(rowData); // Add the row to the table model
-                    }
+    public static void loadExpCSVToTable(String fileName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
+
+                // Check if the line has valid content (non-empty)
+                if (parts.length == 2) {
+                    Object[] rowData = new Object[2];
+                    rowData[0] = parts[0].trim();
+                    rowData[1] = parts[1].trim();
+
+                    expModel.addRow(rowData); // Add the row to the table model
                 }
-        
-                // Refresh the table view by resetting the table model
-                ((DefaultTableModel) expTable.getModel()).fireTableDataChanged();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+            // Refresh the table view by resetting the table model
+            ((DefaultTableModel) expTable.getModel()).fireTableDataChanged();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        public static void fromSavingsToExp (String amountString) {
-            Object[] rowfromSavings = new Object[2];
+    public static void fromSavingsToExp(String amountString) {
+        Object[] rowfromSavings = new Object[2];
 
-            rowfromSavings[0] = amountString;
-            rowfromSavings[1] = "To Savings";
+        rowfromSavings[0] = amountString;
+        rowfromSavings[1] = "To Savings";
 
-            expModel.addRow(rowfromSavings);
-            toExpenseCSV(amountString, "To Savings", "ExpensesTable.csv");
+        expModel.addRow(rowfromSavings);
+        toExpenseCSV(amountString, "To Savings", "ExpensesTable.csv");
 
-
-        }
-
-
+    }
 }
-

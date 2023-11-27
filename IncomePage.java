@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
-
 public class IncomePage {
     private static JLabel totalIncomeLabel = new JLabel();
 
@@ -43,42 +42,44 @@ public class IncomePage {
             Component comp = super.prepareRenderer(renderer, row, column);
             comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
             // Set the font for the entire row to bold
-            Font boldFont = new Font("", Font.BOLD, 16);
+            Font boldFont = new Font("Poppins", Font.BOLD, 16);
             comp.setFont(boldFont);
 
             // Set the font for specific cells (e.g., columns 0 and 1) to plain
             if (column == 0 || column == 1) {
-            Font plainFont = new Font("", Font.PLAIN, 16);
-            comp.setFont(plainFont);
-    }
+                Font plainFont = new Font("Poppins", Font.PLAIN, 16);
+                comp.setFont(plainFont);
+            }
 
-    return comp;
-}
+            return comp;
+        }
 
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     };
-        {
+
+    {
         // Set the font size for the table cells
-        Font cellFont = new Font("", Font.PLAIN, 16); // You can adjust the size (16) as needed
+        Font cellFont = new Font("Poppins", Font.PLAIN, 16);
         incTable.setFont(cellFont);
 
         // Set the font size for the column headers
-        Font headerFont = new Font("", Font.BOLD, 20); // You can adjust the size (20) as needed
+        Font headerFont = new Font("Poppins", Font.BOLD, 20);
         JTableHeader header = incTable.getTableHeader();
         header.setFont(headerFont);
     }
 
     public JPanel incomePanel;
+
     public IncomePage() {
 
         incomePanel = new JPanel();
         incomePanel.setLayout(new BorderLayout());
 
         JLabel label = new JLabel("Welcome to the Income Page");
-        label.setFont(new Font("Arial", Font.PLAIN, 30));
+        label.setFont(new Font("Poppins", Font.PLAIN, 30));
         label.setHorizontalAlignment(JLabel.CENTER);
         incomePanel.add(label, BorderLayout.NORTH);
 
@@ -87,7 +88,7 @@ public class IncomePage {
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
 
         totalIncomeLabel = new JLabel("Total Income: 0.00");
-        totalIncomeLabel.setFont(new Font("", Font.BOLD, 20));
+        totalIncomeLabel.setFont(new Font("Poppins", Font.BOLD, 20));
         tablePanel.add(totalIncomeLabel, BorderLayout.SOUTH);
 
         updateOnlyTotalIncome();
@@ -97,26 +98,26 @@ public class IncomePage {
         incTable.setModel(incModel);
         incTable.setBackground(Color.LIGHT_GRAY);
         incTable.setForeground(Color.black);
-        Font font = new Font("", Font.BOLD, 16);
+        Font font = new Font("Poppins", Font.BOLD, 16);
         incTable.setFont(font);
         incTable.setRowHeight(30);
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
-        Font textFieldFont = new Font("", Font.PLAIN, 18);
+        Font textFieldFont = new Font("Poppins", Font.PLAIN, 18);
         textAmount.setFont(textFieldFont);
         textLabel.setFont(textFieldFont);
 
         JLabel labelAmount = new JLabel("Amount:");
         JLabel labelLabel = new JLabel("Label:");
-        Font labelFont = new Font("", Font.BOLD, 18);
+        Font labelFont = new Font("Poppins", Font.BOLD, 18);
         labelAmount.setFont(labelFont);
         labelLabel.setFont(labelFont);
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
-        Font buttonFont = new Font("", Font.BOLD, 18);
+        Font buttonFont = new Font("Poppins", Font.BOLD, 18);
         btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(incTable);
@@ -177,7 +178,7 @@ public class IncomePage {
                     textLabel.setText("");
 
                     updateOnlyTotalIncome();
-                    
+
                     HomePage.updateAvailableBalance();
                 } else {
                     showError("Please enter a valid numeric amount.");
@@ -237,7 +238,11 @@ public class IncomePage {
         errorFrame.setLocationRelativeTo(null);
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // Use Poppins font for error message
+        Font errorMessageFont = new Font("Poppins", Font.PLAIN, 13); // Change "Poppins" and size as needed
+
         JLabel errorMessage = new JLabel(message);
+        errorMessage.setFont(errorMessageFont);
         errorMessage.setForeground(Color.RED);
         errorMessage.setHorizontalAlignment(JLabel.CENTER);
 
@@ -247,7 +252,7 @@ public class IncomePage {
     }
 
     public static void updateOnlyTotalIncome() {
-    
+
         Variables variablesFunc = new Variables();
         variablesFunc.updateFromFile("Data.dat");
         totalIncomeLabel.setText("Total Income: " + Variables.totalIncome);
@@ -256,52 +261,43 @@ public class IncomePage {
 
     public static void toIncomeCSV(String row0, String row1, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-                writer.write(row0 + "," + row1);
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writer.write(row0 + "," + row1);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        public static void loadIncCSVToTable(String fileName) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
-        
-                    // Check if the line has valid content (non-empty)
-                    if (parts.length == 2) {
-                        Object[] rowData = new Object[2];
-                        rowData[0] = parts[0].trim();
-                        rowData[1] = parts[1].trim();
-        
-                        
-                        incModel.addRow(rowData); // Add the row to the table model
-                    }
+    public static void loadIncCSVToTable(String fileName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
+
+                // Check if the line has valid content (non-empty)
+                if (parts.length == 2) {
+                    Object[] rowData = new Object[2];
+                    rowData[0] = parts[0].trim();
+                    rowData[1] = parts[1].trim();
+
+                    incModel.addRow(rowData); // Add the row to the table model
                 }
-        
-                // Refresh the table view by resetting the table model
-                ((DefaultTableModel) incTable.getModel()).fireTableDataChanged();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+            // Refresh the table view by resetting the table model
+            ((DefaultTableModel) incTable.getModel()).fireTableDataChanged();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        
-        public static void fromSavingsToInc (String amountString) {
-            Object[] rowfromSavings = new Object[2];
+    }
 
-            rowfromSavings[0] = amountString;
-            rowfromSavings[1] = "From Savings";
+    public static void fromSavingsToInc(String amountString) {
+        Object[] rowfromSavings = new Object[2];
 
-            incModel.addRow(rowfromSavings);
-            toIncomeCSV(amountString, "From Savings", "IncomeTable.csv");
+        rowfromSavings[0] = amountString;
+        rowfromSavings[1] = "From Savings";
 
-
-        }
-
-
-    
-
+        incModel.addRow(rowfromSavings);
+        toIncomeCSV(amountString, "From Savings", "IncomeTable.csv");
+    }
 }
-
-    

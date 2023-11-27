@@ -3,10 +3,16 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,10 +21,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 public class Main {
 
     public static void main(String[] args) {
+        loadPoppinsFont();
         // Show the splash screen
         SplashScreen splashScreen = new SplashScreen();
         splashScreen.showSplashScreen(3000); // Display for 2000 milliseconds (2 seconds)
@@ -89,47 +99,92 @@ public class Main {
         });
     }
 
-    private static void showExitDialog(JFrame parentFrame) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+    private static void loadPoppinsFont() {
+        try {
+            // Load Poppins font from the file
+            Font poppinsFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Poppins-Regular.ttf"));
+    
+            // Register the font globally
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(poppinsFont);
+    
+            // Set Poppins as the default font for Swing components
+            setUIFont(new FontUIResource(poppinsFont));
+        } catch (IOException | FontFormatException e) {
+            // Handle the exception more gracefully, e.g., show an error dialog
+            e.printStackTrace();
+            // You might want to display an error dialog or log the error to a file
+        }
+    }
+    
 
-        JLabel label = new JLabel("Do you really want to exit?");
-        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(label, BorderLayout.NORTH);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-        JButton yesButton = new JButton("Yes");
-        yesButton.setBackground(Color.decode("#DDDDD0"));
-        yesButton.setForeground(Color.BLACK);
-
-        JButton noButton = new JButton("No");
-        noButton.setBackground(Color.decode("#FF914D"));
-        noButton.setForeground(Color.WHITE);
-
-        noButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((JDialog) noButton.getTopLevelAncestor()).dispose();
+    private static void setUIFont(FontUIResource font) {
+        UIDefaults defaults = UIManager.getDefaults();
+        Enumeration<?> keys = defaults.keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = defaults.get(key);
+            if (value instanceof FontUIResource) {
+                defaults.put(key, font);
             }
-        });
+        }
+    }
+    
+    
+private static void showExitDialog(JFrame parentFrame) {
+    // Load Poppins font from the file
+    Font poppinsFont;
+    try {
+        poppinsFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Poppins-Regular.ttf"));
+    } catch (IOException | FontFormatException e) {
+        e.printStackTrace();
+        poppinsFont = new Font("Arial", Font.PLAIN, 12); // Fallback font
+    }
 
-        yesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout());
 
-        buttonPanel.add(yesButton);
-        buttonPanel.add(noButton);
+    JLabel label = new JLabel("Do you really want to exit?");
+    label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    label.setFont(poppinsFont.deriveFont(Font.PLAIN, 14)); // Set font for the label
 
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+    panel.add(label, BorderLayout.NORTH);
 
-        JDialog dialog = new JDialog(parentFrame, "Exit", true);
-        dialog.getContentPane().add(panel);
-        dialog.setSize(new Dimension(300, 150));
-        dialog.setLocationRelativeTo(parentFrame);
-        dialog.setVisible(true);
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+    JButton yesButton = new JButton("Yes");
+    yesButton.setBackground(Color.decode("#DDDDD0"));
+    yesButton.setForeground(Color.BLACK);
+    yesButton.setFont(poppinsFont.deriveFont(Font.PLAIN, 14)); // Set font for the button
+
+    JButton noButton = new JButton("No");
+    noButton.setBackground(Color.decode("#FF914D"));
+    noButton.setForeground(Color.WHITE);
+    noButton.setFont(poppinsFont.deriveFont(Font.PLAIN, 14)); // Set font for the button
+
+    noButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((JDialog) noButton.getTopLevelAncestor()).dispose();
+        }
+    });
+
+    yesButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    });
+
+    buttonPanel.add(yesButton);
+    buttonPanel.add(noButton);
+
+    panel.add(buttonPanel, BorderLayout.SOUTH);
+
+    JDialog dialog = new JDialog(parentFrame, "Exit", true);
+    dialog.getContentPane().add(panel);
+    dialog.setSize(new Dimension(300, 150));
+    dialog.setLocationRelativeTo(parentFrame);
+    dialog.setVisible(true);
     }
 }
