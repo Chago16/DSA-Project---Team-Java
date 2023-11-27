@@ -18,7 +18,7 @@ public class SplashScreen extends JWindow {
         setContentPane(content);
 
         // Load the image from file
-        ImageIcon icon = new ImageIcon("Logo.png");
+        ImageIcon icon = new ImageIcon("pictures/Logo.png");
         JLabel label = new JLabel(icon);
         content.add(label, BorderLayout.CENTER);
 

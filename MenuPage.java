@@ -30,17 +30,17 @@ public class MenuPage {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 20, 5, 20); 
         // Add image above buttons
-        ImageIcon logoIcon = new ImageIcon("LogoMenuPage.png");
+        ImageIcon logoIcon = new ImageIcon("pictures/LogoMenuPage.png");
         JLabel logoLabel = new JLabel();
         logoLabel.setIcon(new ImageIcon(logoIcon.getImage().getScaledInstance(200, 80, Image.SCALE_SMOOTH)));
         gbc.gridy = 0;
         menuPanel.add(logoLabel, gbc);
 
         // styling the buttons
-        homeButton = createRoundedButton("Home", "home.png");
-        incomeButton = createRoundedButton("Income", "income.png"); // Replace "income.png" with the actual icon file name
-        expensesButton = createRoundedButton("Expenses", "expenses.png"); // Replace "expenses.png" with the actual icon file name
-        goalButton = createRoundedButton("Goal", "goal.png"); // Replace "goal.png" with the actual icon file name
+        homeButton = createRoundedButton("Home", "pictures/home.png");
+        incomeButton = createRoundedButton("Income", "pictures/income.png"); // Replace "income.png" with the actual icon file name
+        expensesButton = createRoundedButton("Expenses", "pictures/expenses.png"); // Replace "expenses.png" with the actual icon file name
+        goalButton = createRoundedButton("Savings", "pictures/savings.png"); // Replace "goal.png" with the actual icon file name
 
         // Add buttons to the menu panel
         gbc.gridy = 1; // Adjusted the starting position for buttons
