@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+
 public class ExpensePage {
     private static JLabel totalExpenseLabel = new JLabel();
 
@@ -55,8 +56,9 @@ public class ExpensePage {
         expTable.setFont(cellFont);
 
         // Set the font size for the column headers
-        Font headerFont = new Font("Poppins", Font.BOLD, 20); // Change "Poppins" as needed
+        Font headerFont = new Font("Poppins", Font.BOLD, 20);
         JTableHeader header = expTable.getTableHeader();
+        header.setBackground(Color.decode("#DDDDD0"));  // Set the background color of the header
         header.setFont(headerFont);
     }
 
@@ -70,6 +72,7 @@ public class ExpensePage {
         label.setFont(new Font("Poppins", Font.PLAIN, 30)); // Change "Poppins" as needed
         label.setHorizontalAlignment(JLabel.CENTER);
         expensePanel.add(label, BorderLayout.NORTH);
+        expensePanel.setBackground(Color.decode("#FFFFFF"));
 
         JPanel tablePanel = new JPanel();
         tablePanel.setLayout(new BorderLayout());
@@ -90,9 +93,9 @@ public class ExpensePage {
         expTable.setFont(font);
         expTable.setRowHeight(30);
 
-        JTextField textAmount = new JTextField();
-        JTextField textLabel = new JTextField();
-        Font textFieldFont = new Font("Poppins", Font.PLAIN, 18); // Change "Poppins" as needed
+        JTextField textAmount = new RoundedTextField(); // Use RoundedTextField instead of JTextField
+        JTextField textLabel = new RoundedTextField();
+        Font textFieldFont = new Font("Poppins", Font.PLAIN, 20); // Change "Poppins" as needed
         textAmount.setFont(textFieldFont);
         textLabel.setFont(textFieldFont);
 
@@ -102,13 +105,15 @@ public class ExpensePage {
         labelAmount.setFont(labelFont);
         labelLabel.setFont(labelFont);
 
-        JButton btnAdd = new JButton("Add");
+        JButton btnAdd = new RoundedOrangeButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
         Font buttonFont = new Font("Poppins", Font.BOLD, 18); // Change "Poppins" as needed
         btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(expTable);
+        pane.setBackground(Color.WHITE);  // Set the background color of the JScrollPane
+        pane.getViewport().setBackground(Color.WHITE);  // Set the background color of the viewport
         tablePanel.add(pane, BorderLayout.CENTER);
 
         GroupLayout layout = new GroupLayout(expensePanel);

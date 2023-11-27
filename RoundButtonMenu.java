@@ -19,6 +19,7 @@ class RoundButtonMenu extends JButton {
 
         // Add a mouse listener for the hover effect
         addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mouseEntered(MouseEvent e) {
                 setBackground(Color.decode("#FF914D"));  // Set the hover background color to #FF914D

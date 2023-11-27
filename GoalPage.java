@@ -78,6 +78,8 @@ public class GoalPage {
         // Adding the button panel to the totalSavingsPanel
         totalSavingsPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+        buttonPanel.setBackground(Color.decode("#DDDDD0"));
+
         // Adding the goal content panel to the center of goalPanel
         goalPanel.add(goalContentPanel, BorderLayout.CENTER);
     }

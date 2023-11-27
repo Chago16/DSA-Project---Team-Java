@@ -9,9 +9,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
-public class RoundedButtonGoal extends JButton {
+public class RoundedOrangeButton extends JButton {
 
-    public RoundedButtonGoal(String text) {
+    public RoundedOrangeButton(String text) {
         super(text);
         setOpaque(false);
         setContentAreaFilled(false);
@@ -32,12 +32,12 @@ public class RoundedButtonGoal extends JButton {
         });
     }
     private void setHoverBackground() {
-        setBackground(Color.decode("#FF914D")); // Set the hover background color to #FF914D
+        setBackground(Color.decode("#DDDDD0")); // Set the hover background color to #FF914D
         repaint();
     }
 
     private void setDefaultBackground() {
-        setBackground(Color.decode("#FFFFFF")); // Set the default background color
+        setBackground(Color.decode("#FF914D")); // Set the default background color
         repaint();
 
     }
@@ -47,7 +47,7 @@ public class RoundedButtonGoal extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         if (getModel().isPressed()) {
-            g2.setColor(Color.decode("#FF914D"));  // Set the background color when the button is pressed
+            g2.setColor(Color.decode("#DDDDD0"));  // Set the background color when the button is pressed
         } else {
             g2.setColor(getBackground()); // Set the background color when the button is not pressed
         }

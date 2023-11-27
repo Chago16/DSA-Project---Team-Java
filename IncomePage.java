@@ -65,10 +65,11 @@ public class IncomePage {
         Font cellFont = new Font("Poppins", Font.PLAIN, 16);
         incTable.setFont(cellFont);
 
-        // Set the font size for the column headers
         Font headerFont = new Font("Poppins", Font.BOLD, 20);
         JTableHeader header = incTable.getTableHeader();
+        header.setBackground(Color.decode("#DDDDD0")); 
         header.setFont(headerFont);
+        
     }
 
     public JPanel incomePanel;
@@ -82,11 +83,11 @@ public class IncomePage {
         label.setFont(new Font("Poppins", Font.PLAIN, 30));
         label.setHorizontalAlignment(JLabel.CENTER);
         incomePanel.add(label, BorderLayout.NORTH);
+        incomePanel.setBackground(Color.decode("#FFFFFF"));
 
         JPanel tablePanel = new JPanel();
         tablePanel.setLayout(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createTitledBorder(""));
-
         totalIncomeLabel = new JLabel("Total Income: 0.00");
         totalIncomeLabel.setFont(new Font("Poppins", Font.BOLD, 20));
         tablePanel.add(totalIncomeLabel, BorderLayout.SOUTH);
@@ -102,9 +103,9 @@ public class IncomePage {
         incTable.setFont(font);
         incTable.setRowHeight(30);
 
-        JTextField textAmount = new JTextField();
-        JTextField textLabel = new JTextField();
-        Font textFieldFont = new Font("Poppins", Font.PLAIN, 18);
+        JTextField textAmount = new RoundedTextField();
+        JTextField textLabel = new RoundedTextField();
+        Font textFieldFont = new Font("Poppins", Font.PLAIN, 20);
         textAmount.setFont(textFieldFont);
         textLabel.setFont(textFieldFont);
 
@@ -114,13 +115,15 @@ public class IncomePage {
         labelAmount.setFont(labelFont);
         labelLabel.setFont(labelFont);
 
-        JButton btnAdd = new JButton("Add");
+        JButton btnAdd = new RoundedOrangeButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
         Font buttonFont = new Font("Poppins", Font.BOLD, 18);
         btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(incTable);
+        pane.setBackground(Color.WHITE);  // Set the background color of the JScrollPane
+        pane.getViewport().setBackground(Color.WHITE);  // Set the background color of the viewport
         tablePanel.add(pane, BorderLayout.CENTER);
 
         GroupLayout layout = new GroupLayout(incomePanel);
