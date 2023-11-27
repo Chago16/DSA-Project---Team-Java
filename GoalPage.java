@@ -56,13 +56,13 @@ public class GoalPage {
         totalSavingsPanel.add(totalSavingsField, BorderLayout.CENTER);
 
         // Creating "Withdraw" button
-        JButton withdrawButton = new JButton("Withdraw");
+        JButton withdrawButton = createRoundedButton("Withdraw");
         withdrawButton.setFont(new Font("Poppins", Font.PLAIN, 24)); // Change font to Poppins
         withdrawButton.setBackground(Color.decode("#FFFFFF"));
         withdrawButton.addActionListener(e -> showWithdrawDialog());
 
         // Creating "Deposit" button
-        JButton depositButton = new JButton("Deposit");
+        JButton depositButton = createRoundedButton("Deposit");
         depositButton.setFont(new Font("Poppins", Font.PLAIN, 24)); // Change font to Poppins
         depositButton.setBackground(Color.decode("#FFFFFF"));
         depositButton.addActionListener(e -> showDepositDialog());
@@ -77,6 +77,12 @@ public class GoalPage {
 
         // Adding the goal content panel to the center of goalPanel
         goalPanel.add(goalContentPanel, BorderLayout.CENTER);
+    }
+
+    private JButton createRoundedButton(String text) {
+        JButton button = new RoundedButtonGoal(text);
+        button.setFocusPainted(false);
+        return button;
     }
 
     private void showWithdrawDialog() {
@@ -99,19 +105,45 @@ public class GoalPage {
     private void showDepositDialog() {
         JTextField userInputField = new JTextField(10);
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Enter the amount to deposit:"), BorderLayout.NORTH);
+        panel.setBackground(Color.WHITE); // Set background color
+    
+        JLabel label = new JLabel("Enter the amount to deposit:");
+        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        label.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
+    
+        userInputField.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
+    
+        panel.add(label, BorderLayout.NORTH);
         panel.add(userInputField, BorderLayout.CENTER);
-
-        // Set font for the dialog
-        setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 14))); // Change font to Poppins
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Deposit Transaction",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
+    
+        JButton confirmButton = new JButton("Deposit");
+        confirmButton.setBackground(Color.WHITE); // Set background color to white
+        confirmButton.setForeground(Color.BLACK); // Set text color to black
+        confirmButton.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
+    
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setBackground(Color.WHITE); // Set background color to white
+        cancelButton.setForeground(Color.BLACK); // Set text color to black
+        cancelButton.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
+    
+        confirmButton.addActionListener(e -> {
+            handleTransaction(userInputField.getText(), "Deposit");
+            ((JOptionPane) confirmButton.getTopLevelAncestor()).setValue(JOptionPane.OK_OPTION);
+        });
+    
+        cancelButton.addActionListener(e -> ((JOptionPane) cancelButton.getTopLevelAncestor()).setValue(JOptionPane.CANCEL_OPTION));
+    
+        panel.add(confirmButton, BorderLayout.SOUTH);
+        panel.add(cancelButton, BorderLayout.SOUTH);
+    
+        int result = JOptionPane.showOptionDialog(null, panel, "Deposit Transaction",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+    
         if (result == JOptionPane.OK_OPTION) {
             handleTransaction(userInputField.getText(), "Deposit");
         }
     }
+    
 
     private void handleTransaction(String amountString, String transactionType) {
         try {
