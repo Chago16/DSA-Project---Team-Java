@@ -30,10 +30,9 @@ public class HomePage {
         dashboardPanel.setBackground(Color.WHITE); // Changing background color to white
 
         // Creating a smaller rectangular panel inside the dashboard panel
-        JPanel availbudgPanel = new JPanel();
-        availbudgPanel.setBackground(Color.decode("#FF914D")); // Setting background color of the smaller panel
         int width = 750;
         int height = 200;
+        RoundedPanel availbudgPanel = new RoundedPanel(20, Color.decode("#FF914D")); // Using RoundedPanel
         availbudgPanel.setPreferredSize(new Dimension(width, height));
 
         // Adding the smaller panel to the dashboard panel using GridBagConstraints to center it
@@ -89,3 +88,4 @@ public class HomePage {
         availBalLabel.setText("Available Balance: " + Variables.pocketMoney);
     }
 }
+
