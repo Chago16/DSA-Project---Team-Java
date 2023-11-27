@@ -1,8 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
@@ -90,55 +93,97 @@ public class GoalPage {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Enter the amount to withdraw:"), BorderLayout.NORTH);
         panel.add(userInputField, BorderLayout.CENTER);
-
+    
         // Set font for the dialog
         setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 14))); // Change font to Poppins
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Withdraw Transaction",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
+    
+        JButton okButton = new JButton("OK");
+        JButton cancelButton = new JButton("Cancel");
+    
+        okButton.setBackground(Color.WHITE); // Set background color to white
+        cancelButton.setBackground(Color.WHITE); // Set background color to white
+    
+        // Add action listeners to the buttons
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle OK button action
+                JOptionPane.getRootFrame().dispose();
+                handleTransaction(userInputField.getText(), "Withdraw");
+            }
+        });
+    
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle Cancel button action
+                JOptionPane.getRootFrame().dispose();
+            }
+        });
+    
+        // Create a custom panel for the buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+    
+        // Add the button panel to the main panel
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+    
+        int result = JOptionPane.showOptionDialog(null, panel, "Withdraw Transaction",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{},
+                JOptionPane.UNINITIALIZED_VALUE);
+    
         if (result == JOptionPane.OK_OPTION) {
             handleTransaction(userInputField.getText(), "Withdraw");
         }
     }
+    
 
     private void showDepositDialog() {
         JTextField userInputField = new JTextField(10);
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE); // Set background color
-    
-        JLabel label = new JLabel("Enter the amount to deposit:");
-        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        label.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
-    
-        userInputField.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
-    
-        panel.add(label, BorderLayout.NORTH);
+        panel.add(new JLabel("Enter the amount to deposit:"), BorderLayout.NORTH);
         panel.add(userInputField, BorderLayout.CENTER);
-    
-        JButton confirmButton = new JButton("Deposit");
-        confirmButton.setBackground(Color.WHITE); // Set background color to white
-        confirmButton.setForeground(Color.BLACK); // Set text color to black
-        confirmButton.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
-    
+
+        // Set font for the dialog
+        setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 14))); // Change font to Poppins
+
+        JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
+
+        okButton.setBackground(Color.WHITE); // Set background color to white
         cancelButton.setBackground(Color.WHITE); // Set background color to white
-        cancelButton.setForeground(Color.BLACK); // Set text color to black
-        cancelButton.setFont(new Font("Poppins", Font.PLAIN, 14)); // Change font to Poppins
-    
-        confirmButton.addActionListener(e -> {
-            handleTransaction(userInputField.getText(), "Deposit");
-            ((JOptionPane) confirmButton.getTopLevelAncestor()).setValue(JOptionPane.OK_OPTION);
+
+        // Add action listeners to the buttons
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle OK button action
+                JOptionPane.getRootFrame().dispose();
+                handleTransaction(userInputField.getText(), "Deposit");
+            }
         });
-    
-        cancelButton.addActionListener(e -> ((JOptionPane) cancelButton.getTopLevelAncestor()).setValue(JOptionPane.CANCEL_OPTION));
-    
-        panel.add(confirmButton, BorderLayout.SOUTH);
-        panel.add(cancelButton, BorderLayout.SOUTH);
-    
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle Cancel button action
+                JOptionPane.getRootFrame().dispose();
+            }
+        });
+
+        // Create a custom panel for the buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+
+        // Add the button panel to the main panel
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
         int result = JOptionPane.showOptionDialog(null, panel, "Deposit Transaction",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-    
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+
+        // Handle the result if needed
         if (result == JOptionPane.OK_OPTION) {
             handleTransaction(userInputField.getText(), "Deposit");
         }
@@ -191,7 +236,21 @@ public class GoalPage {
             }
             // Update the totalSavingsField text accordingly
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid amount. Please enter a valid number.");
+            // Create a custom panel for the error message
+            JPanel errorPanel = new JPanel(new BorderLayout());
+            JLabel errorMessage = new JLabel("Invalid amount. Please enter a valid number.");
+            errorMessage.setFont(new Font("Poppins", Font.PLAIN, 14)); // Set font for the error message
+            errorMessage.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            errorMessage.setForeground(Color.RED); // Set text color to red
+        
+            // Set background color of the error panel to white
+            errorPanel.setBackground(Color.WHITE);
+        
+            // Add the error message label to the error panel
+            errorPanel.add(errorMessage, BorderLayout.CENTER);
+        
+            // Show the error dialog
+            JOptionPane.showOptionDialog(null, errorPanel, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{}, null);
         }
     }
 
@@ -215,3 +274,4 @@ public class GoalPage {
         }
     }
 }
+
