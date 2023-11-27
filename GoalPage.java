@@ -109,6 +109,8 @@ public class GoalPage {
             double amount = Double.parseDouble(amountString);
             if (transactionType.equals("Withdraw")) {
 
+                if((Variables.savings - amount) >= 0){
+
                 Variables.totalIncome += amount;
                 Variables.savings -= amount;
                 Variables.pocketMoney += amount;
@@ -120,9 +122,14 @@ public class GoalPage {
                 IncomePage.updateOnlyTotalIncome();
                 HomePage.updateAvailableBalance();
                 IncomePage.fromSavingsToInc(amountString);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Insufficient amount", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
 
                 
             } else if (transactionType.equals("Deposit")) {
+
+                if((Variables.pocketMoney - amount) >= 0){
 
                 Variables.totalExpenses += amount;
                 Variables.savings += amount;
@@ -135,6 +142,10 @@ public class GoalPage {
                 ExpensePage.updateOnlyTotalExpense();
                 HomePage.updateAvailableBalance();
                 ExpensePage.fromSavingsToExp(amountString);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Insufficient amount", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
 
             }
             // Update the totalSavingsField text accordingly

@@ -281,7 +281,7 @@ public class IncomePage {
             Object[] rowfromSavings = new Object[2];
 
             rowfromSavings[0] = amountString;
-            rowfromSavings[1] = "To Savings";
+            rowfromSavings[1] = "From Savings";
 
             incModel.addRow(rowfromSavings);
             toIncomeCSV(amountString, "From Savings", "IncomeTable.csv");
