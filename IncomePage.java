@@ -42,8 +42,18 @@ public class IncomePage {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
             Component comp = super.prepareRenderer(renderer, row, column);
             comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
-            return comp;
-        }
+            // Set the font for the entire row to bold
+            Font boldFont = new Font("", Font.BOLD, 16);
+            comp.setFont(boldFont);
+
+            // Set the font for specific cells (e.g., columns 0 and 1) to plain
+            if (column == 0 || column == 1) {
+            Font plainFont = new Font("", Font.PLAIN, 16);
+            comp.setFont(plainFont);
+    }
+
+    return comp;
+}
 
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -93,7 +103,7 @@ public class IncomePage {
 
         JTextField textAmount = new JTextField();
         JTextField textLabel = new JTextField();
-        Font textFieldFont = new Font("", Font.PLAIN, 18); 
+        Font textFieldFont = new Font("", Font.PLAIN, 18);
         textAmount.setFont(textFieldFont);
         textLabel.setFont(textFieldFont);
 
@@ -106,7 +116,7 @@ public class IncomePage {
         JButton btnAdd = new JButton("Add");
         btnAdd.setBackground(Color.decode("#FF914D"));
         btnAdd.setBorder(new LineBorder(Color.decode("#FF914D")));
-        Font buttonFont = new Font("", Font.BOLD, 18); 
+        Font buttonFont = new Font("", Font.BOLD, 18);
         btnAdd.setFont(buttonFont);
 
         JScrollPane pane = new JScrollPane(incTable);
