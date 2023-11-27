@@ -43,6 +43,7 @@ public class Main {
         
             // Update available balance before showing HomePage
             HomePage.updateAvailableBalance();
+            GoalPage.updateSavings();
         
             cardLayout.show(mainPanel, "HomePage");
 

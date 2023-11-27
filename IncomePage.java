@@ -28,7 +28,7 @@ import javax.swing.table.TableCellRenderer;
 
 
 public class IncomePage {
-    private JLabel totalIncomeLabel = new JLabel();
+    private static JLabel totalIncomeLabel = new JLabel();
 
     public static DefaultTableModel incModel = new DefaultTableModel(new Object[][]{}, new Object[]{"Amount", "Label"}) {
         @Override
@@ -236,7 +236,7 @@ public class IncomePage {
         errorFrame.setVisible(true);
     }
 
-    public void updateOnlyTotalIncome() {
+    public static void updateOnlyTotalIncome() {
     
         Variables variablesFunc = new Variables();
         variablesFunc.updateFromFile("Data.dat");
@@ -277,7 +277,18 @@ public class IncomePage {
             }
         }
         
-        
+        public static void fromSavingsToInc (String amountString) {
+            Object[] rowfromSavings = new Object[2];
+
+            rowfromSavings[0] = amountString;
+            rowfromSavings[1] = "To Savings";
+
+            incModel.addRow(rowfromSavings);
+            toIncomeCSV(amountString, "From Savings", "IncomeTable.csv");
+
+
+        }
+
 
     
 

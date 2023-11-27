@@ -28,7 +28,7 @@ import javax.swing.table.TableCellRenderer;
 
 
 public class ExpensePage {
-    private JLabel totalExpenseLabel = new JLabel();
+    private static JLabel totalExpenseLabel = new JLabel();
 
     public static DefaultTableModel expModel = new DefaultTableModel(new Object[][] {}, new Object[] { "Amount", "Label" }) {
         @Override
@@ -236,7 +236,7 @@ public class ExpensePage {
         errorFrame.setVisible(true);
     }
 
-    public void updateOnlyTotalExpense() {
+    public static void updateOnlyTotalExpense() {
     
         Variables variablesFunc = new Variables();
         variablesFunc.updateFromFile("Data.dat");
@@ -276,6 +276,19 @@ public class ExpensePage {
                 e.printStackTrace();
             }
         }
+
+        public static void fromSavingsToExp (String amountString) {
+            Object[] rowfromSavings = new Object[2];
+
+            rowfromSavings[0] = amountString;
+            rowfromSavings[1] = "To Savings";
+
+            expModel.addRow(rowfromSavings);
+            toExpenseCSV(amountString, "To Savings", "ExpensesTable.csv");
+
+
+        }
+
 
 }
 

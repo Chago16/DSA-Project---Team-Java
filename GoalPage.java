@@ -16,7 +16,7 @@ public class GoalPage {
     // public instance of the main frame for calling it on the main file
     public JPanel goalPanel;
 
-    private JTextField totalSavingsField;
+    public static JLabel totalSavingsField;
 
     public GoalPage() {
         // make the goal panel here
@@ -40,22 +40,16 @@ public class GoalPage {
         goalContentPanel.add(totalSavingsPanel, gbc);
 
         // Creating "Total Savings" label
-        JLabel totalSavingsLabel = new JLabel("Total Savings: ");
-        totalSavingsLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        totalSavingsLabel.setForeground(Color.WHITE);
-        totalSavingsLabel.setBorder(BorderFactory.createEmptyBorder(50, 100, 0, 100));
 
         // Creating editable text field for total savings
-        totalSavingsField = new JTextField("0.00", 10);
+        totalSavingsField = new JLabel();
         totalSavingsField.setFont(new Font("Arial", Font.BOLD, 40));
-        totalSavingsField.setEditable(false); // Set as non-editable
         totalSavingsField.setBackground(totalSavingsPanel.getBackground());
         totalSavingsField.setForeground(Color.WHITE); // Set text color to white
         totalSavingsField.setBorder(BorderFactory.createEmptyBorder(0, 100, 50, 100));
 
         // Set layout for totalSavingsPanel
         totalSavingsPanel.setLayout(new BorderLayout());
-        totalSavingsPanel.add(totalSavingsLabel, BorderLayout.NORTH);
         totalSavingsPanel.add(totalSavingsField, BorderLayout.CENTER);
 
         // Creating "Withdraw" button
@@ -114,13 +108,47 @@ public class GoalPage {
         try {
             double amount = Double.parseDouble(amountString);
             if (transactionType.equals("Withdraw")) {
-                // Handle withdrawal logic here
+
+                Variables.totalIncome += amount;
+                Variables.savings -= amount;
+                Variables.pocketMoney += amount;
+                Variables varUse = new Variables();
+                varUse.updateToFile("Data.dat");
+
+                updateSavings();
+
+                IncomePage.updateOnlyTotalIncome();
+                HomePage.updateAvailableBalance();
+                IncomePage.fromSavingsToInc(amountString);
+
+                
             } else if (transactionType.equals("Deposit")) {
-                // Handle deposit logic here
+
+                Variables.totalExpenses += amount;
+                Variables.savings += amount;
+                Variables.pocketMoney -= amount;
+                Variables varUse = new Variables();
+                varUse.updateToFile("Data.dat");
+
+                updateSavings();
+                
+                ExpensePage.updateOnlyTotalExpense();
+                HomePage.updateAvailableBalance();
+                ExpensePage.fromSavingsToExp(amountString);
+
             }
             // Update the totalSavingsField text accordingly
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Invalid amount. Please enter a valid number.");
         }
     }
+
+    public static void updateSavings(){
+
+        Variables varUse = new Variables();
+        varUse.updateFromFile("Data.dat");
+        totalSavingsField.setText("Total Savings: " + Variables.savings);
+
+    }
 }
+
