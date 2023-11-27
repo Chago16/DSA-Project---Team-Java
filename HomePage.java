@@ -46,7 +46,7 @@ public class HomePage {
 
         // Creating "Available Budget" label
         JLabel availbudgLabel = new JLabel("Available Budget");
-        availbudgLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+        availbudgLabel.setFont(new Font("Arial", Font.BOLD, 30));
         availbudgLabel.setForeground(Color.decode("#FFFFFF"));
         availbudgLabel.setBorder(BorderFactory.createEmptyBorder(30, 5, 20, 30));
 
@@ -57,7 +57,7 @@ public class HomePage {
 
         // Creating "Available Balance" label
         availBalLabel = new JLabel("Available Balance: 0.00");
-        availBalLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        availBalLabel.setFont(new Font("Arial", Font.BOLD, 25));
         availBalLabel.setForeground(Color.decode("#FFFFFF"));
         availbudgPanel.add(availBalLabel, BorderLayout.SOUTH);
         availBalLabel.setBorder(BorderFactory.createEmptyBorder(0, 400, 30, 30));
