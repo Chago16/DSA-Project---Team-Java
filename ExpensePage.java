@@ -42,8 +42,18 @@ public class ExpensePage {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
             Component comp = super.prepareRenderer(renderer, row, column);
             comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
-            return comp;
-        }
+            // Set the font for the entire row to bold
+            Font boldFont = new Font("", Font.BOLD, 16);
+            comp.setFont(boldFont);
+
+            // Set the font for specific cells (e.g., columns 0 and 1) to plain
+            if (column == 0 || column == 1) {
+            Font plainFont = new Font("", Font.PLAIN, 16);
+            comp.setFont(plainFont);
+    }
+
+    return comp;
+}
 
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -52,7 +62,7 @@ public class ExpensePage {
     };
         {
         // Set the font size for the table cells
-        Font cellFont = new Font("", Font.BOLD, 16); // You can adjust the size (16) as needed
+        Font cellFont = new Font("", Font.PLAIN, 16); // You can adjust the size (16) as needed
         expTable.setFont(cellFont);
 
         // Set the font size for the column headers
