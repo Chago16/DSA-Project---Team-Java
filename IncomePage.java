@@ -193,6 +193,8 @@ public class IncomePage {
                     HomePage.updateAvailableBalance();
                 } else {
                     showError("Please enter a valid numeric amount.");
+                    textAmount.setText("");
+                    textLabel.setText("");
                 }
             }
         });
