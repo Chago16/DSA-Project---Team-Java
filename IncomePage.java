@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -196,14 +194,6 @@ public class IncomePage {
                     textAmount.setText("");
                     textLabel.setText("");
                 }
-            }
-        });
-
-        // get selected row data From table to textfields
-        incTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Add your logic here if needed
             }
         });
 
