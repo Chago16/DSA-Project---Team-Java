@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +27,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-
 
 public class ExpensePage {
     private static JLabel totalExpenseLabel = new JLabel();
@@ -67,10 +68,16 @@ public class ExpensePage {
 
         expensePanel = new JPanel();
         expensePanel.setLayout(new BorderLayout());
-
+        
+        JPanel imageLabelPanel = new JPanel();
+        imageLabelPanel.setLayout(new BorderLayout());
+        
         JLabel label = new JLabel("Welcome to the Expenses Page");
-        label.setFont(new Font("Poppins", Font.PLAIN, 30)); // Change "Poppins" as needed
-        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(new Font("Poppins", Font.PLAIN, 30));
+        ImageIcon imageIcon = createImageIcon("pictures/expenses.png");
+        label.setIcon(imageIcon);
+
+        expensePanel.add(imageLabelPanel, BorderLayout.NORTH);
         expensePanel.add(label, BorderLayout.NORTH);
         expensePanel.setBackground(Color.decode("#FFFFFF"));
 
@@ -214,6 +221,18 @@ public class ExpensePage {
                 .addComponent(tablePanel)
                 .addComponent(totalExpenseLabel)
         );
+    }
+
+    private ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            Image img = new ImageIcon(imgURL).getImage();
+            img = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            return new ImageIcon(img);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
     private static boolean isValidAmount(String amountText) {
