@@ -30,7 +30,7 @@ public class MenuPage {
     public JPanel menuPanel;
 
     public MenuPage() {
-        setUIFont(new FontUIResource(new Font("Arial", Font.PLAIN, 12)));  // Set a default font for MenuPage
+        setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 12)));  // Set a default font for MenuPage
 
         menuPanel = new JPanel(); // menu panel instance
         menuPanel.setBackground(Color.decode("#2c2a2a"));
