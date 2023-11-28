@@ -14,41 +14,51 @@ class RoundButtonMenu extends JButton {
 
     public RoundButtonMenu(String label) {
         super(label);
+        setOpaque(false);
+        setContentAreaFilled(false);
         setFocusPainted(false);
         setOpaque(false);
 
-        // Add a mouse listener for the hover effect
         addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mouseEntered(MouseEvent e) {
-                setBackground(Color.decode("#FF914D"));  // Set the hover background color to #FF914D
+                setHoverBackground();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                setBackground(Color.WHITE);  // Set the background color when not hovering
+                setDefaultBackground();
             }
         });
+    }
+    private void setHoverBackground() {
+        setBackground(Color.decode("#FF914D")); // Set the hover background color to #FF914D
+        repaint();
+    }
+
+    private void setDefaultBackground() {
+        setBackground(Color.decode("#FFFFFF")); // Set the default background color
+        repaint();
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (getModel().isArmed()) {
-            g.setColor(Color.decode("#FF914D")); 
+        
+        Graphics2D g0 = (Graphics2D) g.create();
+        g0.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        if (getModel().isPressed()) {
+            g0.setColor(Color.decode("#FF914D"));  // Set the background color when the button is pressed
         } else {
-            g.setColor(getBackground());
+            g0.setColor(getBackground()); // Set the background color when the button is not pressed
         }
 
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, ARC_WIDTH, ARC_HEIGHT);
-
-        // Draw the rounded rectangle
-        g2d.fill(roundedRectangle);
+        int arc = 20;  // Set the arc radius for rounded corners
+        g0.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
 
         super.paintComponent(g);
+        g0.dispose();
     }
 
     @Override
