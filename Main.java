@@ -31,7 +31,7 @@ public class Main {
         loadPoppinsFont();
         // Show the splash screen
         SplashScreen splashScreen = new SplashScreen();
-        splashScreen.showSplashScreen(3000); // Display for 2000 milliseconds (2 seconds)
+        splashScreen.showSplashScreen(3000); // Display for 3000 milliseconds (3 seconds)
 
         // Continue with your main application code
         SwingUtilities.invokeLater(() -> {
