@@ -158,25 +158,35 @@ public class ExpensePage {
             public void actionPerformed(ActionEvent e) {
                 String amountText = textAmount.getText();
                 String amountLabel = textLabel.getText();
-
+        
                 if (isValidAmount(amountText)) {
                     int amountInt = Integer.parseInt(amountText);
-
+        
+                    // Check if the amount is greater than the available budget
+                    if (amountInt > Variables.pocketMoney) {
+                        showError("Oops! Your available budget is insufficient for this expense. Please adjust the amount.");
+                        textAmount.setText("");
+                        textLabel.setText("");
+                        return; // Exit the method if the amount is not valid
+                    }
+        
                     row[0] = amountText;
                     row[1] = amountLabel;
                     expModel.addRow(row);
-
+        
                     toExpenseCSV(amountText, amountLabel, "ExpensesTable.csv");
-
+        
                     Variables.totalExpenses += amountInt;
-                    Variables funcVar = new Variables(); // para lang magamit functions
+                    Variables.pocketMoney -= amountInt; // Deduct the amount from the available budget
+        
+                    Variables funcVar = new Variables();
                     funcVar.updateToFile("Data.dat");
-
+        
                     textAmount.setText("");
                     textLabel.setText("");
-
+        
                     updateOnlyTotalExpense();
-
+        
                     HomePage.updateAvailableBalance();
                 } else {
                     showError("Please enter a valid numeric amount.");
@@ -185,6 +195,7 @@ public class ExpensePage {
                 }
             }
         });
+        
 
         // Explicitly set the horizontal and vertical groups
         layout.setHorizontalGroup(layout.createParallelGroup()
@@ -238,20 +249,20 @@ public class ExpensePage {
 
     private static void showError(String message) {
         JFrame errorFrame = new JFrame("Error");
-        errorFrame.setSize(300, 100);
+        errorFrame.setSize(350, 100);  // Adjust the size as needed
         errorFrame.setLocationRelativeTo(null);
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     
         Font errorMessageFont = new Font("Poppins", Font.PLAIN, 14);
-        JLabel errorMessage = new JLabel(message);
+        JLabel errorMessage = new JLabel("<html><div style='text-align: center;'>" + message + "</div></html>"); // Use CSS for centering
         errorMessage.setFont(errorMessageFont);
         errorMessage.setForeground(Color.RED);
-        errorMessage.setHorizontalAlignment(JLabel.CENTER);
     
         errorFrame.add(errorMessage);
     
         errorFrame.setVisible(true);
     }
+    
     
 
     public static void updateOnlyTotalExpense() {
