@@ -50,6 +50,10 @@ public class Main {
             mainPanel.add(ep.expensePanel, "ExpensePage");
             GoalPage gp = new GoalPage();
             mainPanel.add(gp.goalPanel, "GoalPage");
+            TipsPage tp = new TipsPage();
+            mainPanel.add(tp.tipsPanel, "TipsPage");
+            AboutPage ap = new AboutPage();
+            mainPanel.add(ap.aboutPanel, "AboutPage");
         
             // Update available balance before showing HomePage
             HomePage.updateAvailableBalance();
