@@ -25,6 +25,8 @@ public class MenuPage {
     private JButton incomeButton;
     private JButton expensesButton;
     private JButton goalButton;
+    private JButton tipsButton;
+    private JButton aboutButton;
 
     // public instance of the menu frame for calling it on the main file
     public JPanel menuPanel;
@@ -50,6 +52,8 @@ public class MenuPage {
         incomeButton = createRoundedButton("Income", "pictures/income.png"); // Replace "income.png" with the actual icon file name
         expensesButton = createRoundedButton("Expenses", "pictures/expenses.png"); // Replace "expenses.png" with the actual icon file name
         goalButton = createRoundedButton("Savings", "pictures/savings.png"); // Replace "goal.png" with the actual icon file name
+        tipsButton = createRoundedButton("Tips", "pictures/tips.png"); // Replace "expenses.png" with the actual icon file name
+        aboutButton = createRoundedButton("About", "pictures/about.png"); // Replace "goal.png" with the actual icon file name
 
         // Add buttons to the menu panel
         gbc.gridy = 1; // Adjusted the starting position for buttons
@@ -60,6 +64,10 @@ public class MenuPage {
         menuPanel.add(expensesButton, gbc);
         gbc.gridy = 4;
         menuPanel.add(goalButton, gbc);
+        gbc.gridy = 5;
+        menuPanel.add(tipsButton, gbc);
+        gbc.gridy = 6;
+        menuPanel.add(aboutButton, gbc);
     }
 
     private JButton createRoundedButton(String buttonText, String iconName) {
@@ -91,6 +99,8 @@ public class MenuPage {
         incomeButton.addActionListener(e -> cardLayout.show(mainPanel, "IncomePage"));
         expensesButton.addActionListener(e -> cardLayout.show(mainPanel, "ExpensePage"));
         goalButton.addActionListener(e -> cardLayout.show(mainPanel, "GoalPage"));
+        tipsButton.addActionListener(e -> cardLayout.show(mainPanel, "TipsPage"));
+        aboutButton.addActionListener(e -> cardLayout.show(mainPanel, "AboutPage"));
         // Add action listeners for other buttons as needed
     }
 
