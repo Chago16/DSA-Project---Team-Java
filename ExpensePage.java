@@ -1,8 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -10,10 +10,11 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,10 +27,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+import com.toedter.calendar.JDateChooser;
+
+
 public class ExpensePage {
+
     private static JLabel totalExpenseLabel = new JLabel();
 
-    public static DefaultTableModel expModel = new DefaultTableModel(new Object[][] {}, new Object[] { "Amount", "Label" }) {
+    public static DefaultTableModel expModel = new DefaultTableModel(new Object[][] {}, new Object[] { "Amount", "Label", "Date" }) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -62,21 +67,11 @@ public class ExpensePage {
     }
 
     public JPanel expensePanel;
+    public JDateChooser dateChooser;
     public ExpensePage() {
 
         expensePanel = new JPanel();
         expensePanel.setLayout(new BorderLayout());
-        
-        JPanel imageLabelPanel = new JPanel();
-        imageLabelPanel.setLayout(new BorderLayout());
-        
-        JLabel label = new JLabel("Welcome to the Expenses Page");
-        label.setFont(new Font("Poppins", Font.PLAIN, 30));
-        ImageIcon imageIcon = createImageIcon("pictures/expenses.png");
-        label.setIcon(imageIcon);
-
-        expensePanel.add(imageLabelPanel, BorderLayout.NORTH);
-        expensePanel.add(label, BorderLayout.NORTH);
         expensePanel.setBackground(Color.decode("#FFFFFF"));
 
         JPanel tablePanel = new JPanel();
@@ -89,7 +84,21 @@ public class ExpensePage {
 
         updateOnlyTotalExpense();
 
-        Object[] columns = {"Amount", "Label"};
+        dateChooser = new JDateChooser();
+        dateChooser.setFont(new Font("Poppins", Font.PLAIN, 20)); // Set font as needed
+        dateChooser.setDateFormatString("MM/dd/yyyy"); // Set date format
+        dateChooser.setBorder(BorderFactory.createTitledBorder("Date"));
+        dateChooser.setPreferredSize(new Dimension(200, 60));
+
+        expModel = new DefaultTableModel(new Object[][] {}, new Object[] { "Amount", "Label", "Date" }) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        
+        Object[] columns = {"Amount", "Label", "Date"};
         expModel.setColumnIdentifiers(columns);
         expTable.setModel(expModel);
         expTable.setBackground(Color.LIGHT_GRAY);
@@ -119,6 +128,7 @@ public class ExpensePage {
         JScrollPane pane = new JScrollPane(expTable);
         pane.setBackground(Color.WHITE);  // Set the background color of the JScrollPane
         pane.getViewport().setBackground(Color.WHITE);  // Set the background color of the viewport
+        pane.setPreferredSize(new Dimension(400, 200));
         tablePanel.add(pane, BorderLayout.CENTER);
 
         GroupLayout layout = new GroupLayout(expensePanel);
@@ -126,116 +136,118 @@ public class ExpensePage {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        // Add dateChooser to the horizontal and vertical groups
         layout.setHorizontalGroup(layout.createParallelGroup()
-                .addComponent(tablePanel)
-                .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(labelAmount)
-                                .addComponent(labelLabel))
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-                .addComponent(totalExpenseLabel, GroupLayout.Alignment.TRAILING)
-        );
+            .addComponent(tablePanel)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(labelAmount)
+                        .addComponent(labelLabel)
+                        .addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)) // Add dateChooser here
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+        .addComponent(totalExpenseLabel, GroupLayout.Alignment.TRAILING)
+    );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelAmount)
-                        .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelLabel)
-                        .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAdd))
-                .addComponent(totalExpenseLabel)
-        );
+            .addComponent(tablePanel)
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(labelAmount)
+                .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(labelLabel)
+                .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+            .addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE) // Add dateChooser here
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(btnAdd))
+            .addComponent(totalExpenseLabel)
+    );
 
-        Object[] row = new Object[2];
+        Object[] row = new Object[3];
 
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String amountText = textAmount.getText();
-                String amountLabel = textLabel.getText();
         
-                if (isValidAmount(amountText)) {
-                    int amountInt = Integer.parseInt(amountText);
-        
-                    // Check if the amount is greater than the available budget
-                    if (amountInt > Variables.pocketMoney) {
-                        showError("Oops! Your available budget is insufficient for this expense. Please adjust the amount.");
-                        textAmount.setText("");
-                        textLabel.setText("");
-                        return; // Exit the method if the amount is not valid
-                    }
-        
-                    row[0] = amountText;
-                    row[1] = amountLabel;
-                    expModel.addRow(row);
-        
-                    toExpenseCSV(amountText, amountLabel, "ExpensesTable.csv");
-        
-                    Variables.totalExpenses += amountInt;
-                    Variables.pocketMoney -= amountInt; // Deduct the amount from the available budget
-        
-                    Variables funcVar = new Variables();
-                    funcVar.updateToFile("Data.dat");
-        
+    btnAdd.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String amountText = textAmount.getText();
+            String amountLabel = textLabel.getText();
+            // Set the current date
+            Date selectedDate = new Date();
+
+            if (isValidAmount(amountText)) {
+                int amountInt = Integer.parseInt(amountText);
+
+                // Check if the amount is greater than the available budget
+                if (amountInt > Variables.pocketMoney) {
+                    showError("Oops! Your available budget is insufficient for this expense. Please adjust the amount.");
                     textAmount.setText("");
                     textLabel.setText("");
-        
-                    updateOnlyTotalExpense();
-        
-                    HomePage.updateAvailableBalance();
-                } else {
-                    showError("Please enter a valid numeric amount.");
-                    textAmount.setText("");
-                    textLabel.setText("");
+                    return; // Exit the method if the amount is not valid
                 }
+
+                Object[] row = new Object[3];
+                row[0] = amountText;
+                row[1] = amountLabel;
+                row[2] = new SimpleDateFormat("MM/dd/yyyy").format(selectedDate);
+                expModel.addRow(row);
+
+                // Include the date in your data storage method, e.g., toExpenseCSV
+                toExpenseCSV(amountText, amountLabel, selectedDate, "ExpensesTable.csv");
+
+                Variables.totalExpenses += amountInt;
+                Variables.pocketMoney -= amountInt; // Deduct the amount from the available budget
+
+                Variables funcVar = new Variables();
+                funcVar.updateToFile("Data.dat");
+
+                textAmount.setText("");
+                textLabel.setText("");
+
+                // Clear the JDateChooser text field
+                dateChooser.setDate(null);
+
+                updateOnlyTotalExpense();
+
+                HomePage.updateAvailableBalance();
+            } else {
+                showError("Please enter a valid numeric amount.");
+                textAmount.setText("");
+                textLabel.setText("");
             }
-        });
+        }
+    });
+        
         
 
-        // Explicitly set the horizontal and vertical groups
+        // Add dateChooser to the horizontal and vertical groups
         layout.setHorizontalGroup(layout.createParallelGroup()
-                .addComponent(label)  // Add the label to the horizontal group
-                .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(labelAmount)
-                                .addComponent(labelLabel))
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-                .addComponent(tablePanel)
-                .addComponent(totalExpenseLabel, GroupLayout.Alignment.TRAILING)
+            .addComponent(tablePanel)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(labelAmount)
+                        .addComponent(labelLabel)
+                        .addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)) // Add dateChooser here
+                .addGroup(layout.createParallelGroup()
+                        .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+            .addComponent(totalExpenseLabel, GroupLayout.Alignment.TRAILING)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(label)  // Add the label to the vertical group
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelAmount)
-                        .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelLabel)
-                        .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAdd))
-                .addComponent(tablePanel)
-                .addComponent(totalExpenseLabel)
+            .addComponent(tablePanel)
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(labelAmount)
+                .addComponent(textAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(labelLabel)
+                .addComponent(textLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAdd))
+            .addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE) // Add dateChooser here
+            .addComponent(totalExpenseLabel)
         );
-    }
-
-    private ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            Image img = new ImageIcon(imgURL).getImage();
-            img = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            return new ImageIcon(img);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
     }
 
     private static boolean isValidAmount(String amountText) {
@@ -273,37 +285,38 @@ public class ExpensePage {
 
     }
 
-    public static void toExpenseCSV(String row0, String row1, String fileName) {
+    public static void toExpenseCSV(String row0, String row1, Date selectedDate, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
-            writer.write(row0 + "," + row1);
+            String formattedDate = new SimpleDateFormat("MM/dd/yyyy").format(selectedDate);
+            writer.write(row0 + "," + row1 + "," + formattedDate);
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 
-    public static void loadExpCSVToTable(String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",", 2); // Split the line into two parts at the first comma encountered
+public static void loadExpCSVToTable(String fileName) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",", 3);
 
-                // Check if the line has valid content (non-empty)
-                if (parts.length == 2) {
-                    Object[] rowData = new Object[2];
-                    rowData[0] = parts[0].trim();
-                    rowData[1] = parts[1].trim();
-
-                    expModel.addRow(rowData); // Add the row to the table model
-                }
+            if (parts.length == 3) {
+                Object[] rowData = new Object[3];
+                rowData[0] = parts[0].trim();
+                rowData[1] = parts[1].trim();
+                rowData[2] = parts[2].trim();
+                
+                expModel.addRow(rowData);
             }
-
-            // Refresh the table view by resetting the table model
-            ((DefaultTableModel) expTable.getModel()).fireTableDataChanged();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        ((DefaultTableModel) expTable.getModel()).fireTableDataChanged();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 
     public static void fromSavingsToExp(String amountString) {
         Object[] rowfromSavings = new Object[2];
@@ -312,7 +325,7 @@ public class ExpensePage {
         rowfromSavings[1] = "To Savings";
 
         expModel.addRow(rowfromSavings);
-        toExpenseCSV(amountString, "To Savings", "ExpensesTable.csv");
-
+        // Assuming amountString is the amount and dateChooser.getDate() returns the selected date
+        toExpenseCSV(amountString, "To Savings", new Date(), "ExpensesTable.csv");
     }
 }
