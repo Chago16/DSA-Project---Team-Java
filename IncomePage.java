@@ -244,23 +244,22 @@ public class IncomePage {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",", 3);
-
+    
                 if (parts.length == 3) {
-                    Object[] rowData = new Object[2];
+                    Object[] rowData = new Object[3];  // Corrected array size
                     rowData[0] = parts[0].trim();
                     rowData[1] = parts[1].trim();
                     rowData[2] = parts[2].trim();
-
+    
                     incModel.addRow(rowData);
                 }
             }
-
+    
             ((DefaultTableModel) incTable.getModel()).fireTableDataChanged();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public static void fromSavingsToInc(String amountString) {
         Object[] rowfromSavings = new Object[2];
 
