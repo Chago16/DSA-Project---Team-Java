@@ -166,28 +166,31 @@ public class IncomePage {
             public void actionPerformed(ActionEvent e) {
                 String amountText = textAmount.getText();
                 String amountLabel = textLabel.getText();
-                Date selectedDate = new Date();
-
+                
+                // Set the current date
+                Date selectedDate = dateChooser.getDate(); // Use the selected date from JDateChooser
+        
                 if (isValidAmount(amountText)) {
                     int amountInt = Integer.parseInt(amountText);
-
+        
+                    Object[] row = new Object[3];
                     row[0] = amountText;
                     row[1] = amountLabel;
                     row[2] = new SimpleDateFormat("MM/dd/yyyy").format(selectedDate);
                     incModel.addRow(row);
-
+        
                     toIncomeCSV(amountText, amountLabel, selectedDate, "IncomeTable.csv");
-
+        
                     Variables.totalIncome += amountInt;
                     Variables funcVar = new Variables();
                     funcVar.updateToFile("Data.dat");
-
+        
                     textAmount.setText("");
                     textLabel.setText("");
                     dateChooser.setDate(null); // Clear the JDateChooser text field
-
+        
                     updateOnlyTotalIncome();
-
+        
                     HomePage.updateAvailableBalance();
                 } else {
                     showError("Please enter a valid numeric amount.");
