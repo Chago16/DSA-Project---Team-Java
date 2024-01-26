@@ -313,6 +313,7 @@ public class GoalPage {
                 varUse.updateToFile("Data.dat");
 
                 updateSavings();
+                updateProgressBar();
 
                 IncomePage.updateOnlyTotalIncome();
                 HomePage.updateAvailableBalance();
@@ -348,6 +349,7 @@ public class GoalPage {
                 varUse.updateToFile("Data.dat");
 
                 updateSavings();
+                updateProgressBar();
                 
                 ExpensePage.updateOnlyTotalExpense();
                 HomePage.updateAvailableBalance();
