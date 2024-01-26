@@ -90,12 +90,15 @@ public class ExpensePage {
         dateChooser.setBorder(BorderFactory.createTitledBorder("Date"));
         dateChooser.setPreferredSize(new Dimension(200, 60));
 
+        // Initialize the table model only once
         expModel = new DefaultTableModel(new Object[][] {}, new Object[] { "Amount", "Label", "Date" }) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+
+    loadExpCSVToTable("ExpensesTable.csv");
         
         
         Object[] columns = {"Amount", "Label", "Date"};
@@ -166,7 +169,6 @@ public class ExpensePage {
     );
 
         Object[] row = new Object[3];
-
         
     btnAdd.addActionListener(new ActionListener() {
         @Override
@@ -296,27 +298,29 @@ public class ExpensePage {
     }
     
 
-public static void loadExpCSVToTable(String fileName) {
-    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",", 3);
-
-            if (parts.length == 3) {
-                Object[] rowData = new Object[3];
-                rowData[0] = parts[0].trim();
-                rowData[1] = parts[1].trim();
-                rowData[2] = parts[2].trim();
-                
-                expModel.addRow(rowData);
+    public static void loadExpCSVToTable(String fileName) {
+        // Clear the existing data in the table model
+        expModel.setRowCount(0);
+    
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",", 3);
+    
+                if (parts.length == 3) {
+                    Object[] rowData = new Object[3];
+                    rowData[0] = parts[0].trim();
+                    rowData[1] = parts[1].trim();
+                    rowData[2] = parts[2].trim();
+    
+                    expModel.addRow(rowData);
+                }
             }
+        } catch (IOException e) {
+            // Print or log the error
+            e.printStackTrace();
         }
-        ((DefaultTableModel) expTable.getModel()).fireTableDataChanged();
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-}
-
 
     public static void fromSavingsToExp(String amountString) {
         Object[] rowfromSavings = new Object[2];
