@@ -2,20 +2,25 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+
+
 
 public class GoalPage {
 
@@ -24,69 +29,78 @@ public class GoalPage {
 
     public static JLabel totalSavingsField;
 
+    private static JLabel savingsGoalLabel;
+    private static JProgressBar savingsProgressBar;
+    private static double savingsGoal = 0.0;
+
     public GoalPage() {
         // make the goal panel here
-        goalPanel = new JPanel();
-        goalPanel.setLayout(new BorderLayout()); // Set layout manager to BorderLayout
-        JPanel goalContentPanel = new JPanel(new GridBagLayout());
-        goalContentPanel.setBackground(Color.WHITE); // Changing background color to white
+        goalPanel = new JPanel(new BorderLayout());
 
         // Creating a larger rectangular panel inside the goal content panel
-        JPanel totalSavingsPanel = new JPanel();
-        totalSavingsPanel.setBackground(Color.decode("#FF914D")); // Setting background color of the larger panel
-        int width = 800;
-        int height = 250;
-        totalSavingsPanel.setPreferredSize(new java.awt.Dimension(width, height));
-
-        // Adding the larger panel to the goal content panel using GridBagConstraints to center it
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.CENTER;
-        goalContentPanel.add(totalSavingsPanel, gbc);
+        JPanel totalSavingsPanel = new JPanel(new BorderLayout());
+        totalSavingsPanel.setBackground(Color.decode("#FFFFFF")); // Setting background color
 
         // Creating "Total Savings" label
-
-        // Creating editable text field for total savings
-        totalSavingsField = new JLabel();
-        totalSavingsField.setFont(new Font("Poppins", Font.BOLD, 40)); // Change font to Poppins
-        totalSavingsField.setBackground(totalSavingsPanel.getBackground());
-        totalSavingsField.setForeground(Color.WHITE); // Set text color to white
+        totalSavingsField = new JLabel("Total Savings: " + savingsGoal);
+        totalSavingsField.setFont(new Font("Poppins", Font.BOLD, 40));
+        totalSavingsField.setForeground(Color.decode("#000000"));
         totalSavingsField.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
-
-        // Set layout for totalSavingsPanel
-        totalSavingsPanel.setLayout(new BorderLayout());
         totalSavingsPanel.add(totalSavingsField, BorderLayout.CENTER);
 
         // Creating "Withdraw" button
         JButton withdrawButton = createRoundedButton("Withdraw");
-        withdrawButton.setFont(new Font("Poppins", Font.PLAIN, 24)); // Change font to Poppins
-        withdrawButton.setBackground(Color.decode("#FFFFFF"));
-        withdrawButton.addActionListener(e -> showWithdrawDialog());
-
-        // Creating "Deposit" button
         JButton depositButton = createRoundedButton("Deposit");
-        depositButton.setFont(new Font("Poppins", Font.PLAIN, 24)); // Change font to Poppins
-        depositButton.setBackground(Color.decode("#FFFFFF"));
-        depositButton.addActionListener(e -> showDepositDialog());
+        JButton setGoalButton = createRoundedButton("Set Goal");
 
         // Creating panel for buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(withdrawButton);
         buttonPanel.add(depositButton);
+        buttonPanel.add(setGoalButton);
+        buttonPanel.setBackground(Color.decode("#DDDDD0"));
 
         // Adding the button panel to the totalSavingsPanel
         totalSavingsPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        buttonPanel.setBackground(Color.decode("#DDDDD0"));
+        // Adding the totalSavingsPanel to the goalPanel
+        goalPanel.add(totalSavingsPanel, BorderLayout.CENTER);
 
-        // Adding the goal content panel to the center of goalPanel
-        goalPanel.add(goalContentPanel, BorderLayout.CENTER);
+        // Creating a panel for savings goal
+        JPanel savingsGoalPanel = new JPanel(new BorderLayout());
+        savingsGoalPanel.setBackground(Color.decode("#FF914D"));
+
+        // Creating label for savings goal
+        savingsGoalLabel = new JLabel("Savings Goal: $" + savingsGoal);
+        savingsGoalLabel.setFont(new Font("Poppins", Font.BOLD, 24));
+        savingsGoalLabel.setForeground(Color.WHITE);
+        savingsGoalLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        // Creating progress bar for savings goal
+        savingsProgressBar = new JProgressBar(0, (int) savingsGoal);
+        savingsProgressBar.setStringPainted(true);
+
+        // Adding components to the savings goal panel
+        savingsGoalPanel.add(savingsGoalLabel, BorderLayout.NORTH);
+        savingsGoalPanel.add(savingsProgressBar, BorderLayout.CENTER);
+
+        // Adding the savings goal panel to the goalPanel
+        goalPanel.add(savingsGoalPanel, BorderLayout.SOUTH);
+
+        // Add action listeners
+        withdrawButton.addActionListener(e -> showWithdrawDialog());
+        depositButton.addActionListener(e -> showDepositDialog());
+        setGoalButton.addActionListener(e -> showSetGoalDialog());
+        
+        // Load the savings goal when the application starts
+        loadSavingsGoal();
     }
 
     private JButton createRoundedButton(String text) {
         JButton button = new RoundedButtonGoal(text);
         button.setFocusPainted(false);
+        button.setFont(new Font("Poppins", Font.PLAIN, 24));
+        button.setBackground(Color.decode("#FFFFFF"));
         return button;
     }
 
@@ -191,6 +205,99 @@ public class GoalPage {
         }
     }
     
+    private void showSetGoalDialog() {
+        JTextField goalInputField = new JTextField(10);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JLabel("Enter the savings goal:"), BorderLayout.NORTH);
+        panel.add(goalInputField, BorderLayout.CENTER);
+
+        // Set font for the dialog
+        setUIFont(new FontUIResource(new Font("Poppins", Font.PLAIN, 14))); // Change font to Poppins
+
+        JButton okButton = new JButton("OK");
+        JButton cancelButton = new JButton("Cancel");
+
+        okButton.setBackground(Color.WHITE);
+        cancelButton.setBackground(Color.WHITE);
+
+        okButton.addActionListener(e -> {
+            setSavingsGoal(goalInputField.getText());
+            JOptionPane.getRootFrame().dispose();
+        });
+
+        cancelButton.addActionListener(e -> JOptionPane.getRootFrame().dispose());
+
+        // Create a custom panel for the buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+
+        // Add the button panel to the main panel
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JOptionPane.showOptionDialog(null, panel, "Set Savings Goal",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{},
+                JOptionPane.UNINITIALIZED_VALUE);
+    }
+
+    private void setSavingsGoal(String goalString) {
+        try {
+            double newGoal = Double.parseDouble(goalString);
+            if (newGoal >= 0) {
+                savingsGoal = newGoal;
+                updateProgressBar();
+                updateSavingsGoalLabel();
+                
+                // Save the updated goal to a file
+                saveGoalToFile();
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid goal amount. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid goal amount. Please enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void saveGoalToFile() {
+        try (PrintWriter writer = new PrintWriter("savings_goal.txt")) {
+            writer.println(savingsGoal);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately in your application
+        }
+    }
+    private void loadSavingsGoal() {
+        File file = new File("savings_goal.txt");
+        if (file.exists()) {
+            try (Scanner scanner = new Scanner(file)) {
+                if (scanner.hasNextDouble()) {
+                    savingsGoal = scanner.nextDouble();
+                    updateProgressBar();
+                    updateSavingsGoalLabel();
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately in your application
+            }
+        }
+    }
+    
+    private static void updateProgressBar() {
+        double difference = Variables.savings - savingsGoal;
+    
+        if (difference >= 0) {
+            // If savings are equal or exceed the goal, set the progress to the maximum
+            savingsProgressBar.setMaximum((int) savingsGoal);
+            savingsProgressBar.setValue((int) savingsGoal);
+        } else {
+            // If savings are less than the goal, set the progress to the savings amount
+            savingsProgressBar.setMaximum((int) savingsGoal);
+            savingsProgressBar.setValue((int) Variables.savings);
+        }
+    }
+
+    private static void updateSavingsGoalLabel() {
+        savingsGoalLabel.setText("Savings Goal: " + savingsGoal);
+    }
+
 
     private void handleTransaction(String amountString, String transactionType) {
         try {
@@ -210,6 +317,7 @@ public class GoalPage {
                 IncomePage.updateOnlyTotalIncome();
                 HomePage.updateAvailableBalance();
                 IncomePage.fromSavingsToInc(amountString);
+                
             } else {
                 // Create a custom panel for the warning message
                 JPanel warningPanel = new JPanel(new BorderLayout());
@@ -248,8 +356,9 @@ public class GoalPage {
                 } else {
                     JOptionPane.showMessageDialog(null, "Insufficient amount", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
-
             }
+
+            checkGoalAchievement();
             // Update the totalSavingsField text accordingly
         } catch (NumberFormatException ex) {
             // Create a custom panel for the error message
@@ -278,6 +387,14 @@ public class GoalPage {
 
     }
 
+    private void checkGoalAchievement() {
+        if (Variables.savings >= savingsGoal) {
+            JOptionPane.showMessageDialog(null, "Congratulations! You have achieved your savings goal!", "Goal Achieved", JOptionPane.INFORMATION_MESSAGE);
+            savingsGoal = 0.0;
+            updateProgressBar();
+            updateSavingsGoalLabel();
+        }
+    }
     // Method to set the font for the dialog
     private static void setUIFont(FontUIResource font) {
         Enumeration<?> keys = UIManager.getDefaults().keys();
@@ -290,4 +407,3 @@ public class GoalPage {
         }
     }
 }
-
