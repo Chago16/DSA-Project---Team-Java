@@ -175,9 +175,21 @@ public class ExpensePage {
             public void actionPerformed(ActionEvent e) {
                 String amountText = textAmount.getText();
                 String amountLabel = textLabel.getText();
-                
+        
                 // Set the current date
                 Date selectedDate = dateChooser.getDate(); // Use the selected date from JDateChooser
+        
+                // Check if label is empty
+                if (amountLabel.isEmpty()) {
+                    showError("Please enter a label.");
+                    return; // Exit the method if label is empty
+                }
+        
+                // Check if date is empty
+                if (selectedDate == null) {
+                    showError("Please enter a date.");
+                    return; // Exit the method if date is empty
+                }
         
                 if (isValidAmount(amountText)) {
                     int amountInt = Integer.parseInt(amountText);
@@ -221,6 +233,7 @@ public class ExpensePage {
                 }
             }
         });
+        
 
         // Add dateChooser to the horizontal and vertical groups
         layout.setHorizontalGroup(layout.createParallelGroup()
@@ -262,16 +275,20 @@ public class ExpensePage {
 
     private static void showError(String message) {
         JFrame errorFrame = new JFrame("Error");
-        errorFrame.setSize(350, 100);  // Adjust the size as needed
+        errorFrame.setSize(300, 100);
         errorFrame.setLocationRelativeTo(null);
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     
         Font errorMessageFont = new Font("Poppins", Font.PLAIN, 14);
-        JLabel errorMessage = new JLabel("<html><div style='text-align: center;'>" + message + "</div></html>"); // Use CSS for centering
+    
+        JLabel errorMessage = new JLabel(message);
         errorMessage.setFont(errorMessageFont);
         errorMessage.setForeground(Color.RED);
+        errorMessage.setHorizontalAlignment(JLabel.CENTER); // Center-align the text
     
-        errorFrame.add(errorMessage);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(errorMessage, BorderLayout.CENTER);
+        errorFrame.add(panel);
     
         errorFrame.setVisible(true);
     }
