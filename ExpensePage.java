@@ -170,58 +170,57 @@ public class ExpensePage {
 
         Object[] row = new Object[3];
         
-    btnAdd.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String amountText = textAmount.getText();
-            String amountLabel = textLabel.getText();
-            // Set the current date
-            Date selectedDate = new Date();
-
-            if (isValidAmount(amountText)) {
-                int amountInt = Integer.parseInt(amountText);
-
-                // Check if the amount is greater than the available budget
-                if (amountInt > Variables.pocketMoney) {
-                    showError("Oops! Your available budget is insufficient for this expense. Please adjust the amount.");
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String amountText = textAmount.getText();
+                String amountLabel = textLabel.getText();
+                
+                // Set the current date
+                Date selectedDate = dateChooser.getDate(); // Use the selected date from JDateChooser
+        
+                if (isValidAmount(amountText)) {
+                    int amountInt = Integer.parseInt(amountText);
+        
+                    // Check if the amount is greater than the available budget
+                    if (amountInt > Variables.pocketMoney) {
+                        showError("Oops! Your available budget is insufficient for this expense. Please adjust the amount.");
+                        textAmount.setText("");
+                        textLabel.setText("");
+                        return; // Exit the method if the amount is not valid
+                    }
+        
+                    Object[] row = new Object[3];
+                    row[0] = amountText;
+                    row[1] = amountLabel;
+                    row[2] = new SimpleDateFormat("MM/dd/yyyy").format(selectedDate);
+                    expModel.addRow(row);
+        
+                    // Include the date in your data storage method, e.g., toExpenseCSV
+                    toExpenseCSV(amountText, amountLabel, selectedDate, "ExpensesTable.csv");
+        
+                    Variables.totalExpenses += amountInt;
+                    Variables.pocketMoney -= amountInt; // Deduct the amount from the available budget
+        
+                    Variables funcVar = new Variables();
+                    funcVar.updateToFile("Data.dat");
+        
                     textAmount.setText("");
                     textLabel.setText("");
-                    return; // Exit the method if the amount is not valid
+        
+                    // Clear the JDateChooser text field
+                    dateChooser.setDate(null);
+        
+                    updateOnlyTotalExpense();
+        
+                    HomePage.updateAvailableBalance();
+                } else {
+                    showError("Please enter a valid numeric amount.");
+                    textAmount.setText("");
+                    textLabel.setText("");
                 }
-
-                Object[] row = new Object[3];
-                row[0] = amountText;
-                row[1] = amountLabel;
-                row[2] = new SimpleDateFormat("MM/dd/yyyy").format(selectedDate);
-                expModel.addRow(row);
-
-                // Include the date in your data storage method, e.g., toExpenseCSV
-                toExpenseCSV(amountText, amountLabel, selectedDate, "ExpensesTable.csv");
-
-                Variables.totalExpenses += amountInt;
-                Variables.pocketMoney -= amountInt; // Deduct the amount from the available budget
-
-                Variables funcVar = new Variables();
-                funcVar.updateToFile("Data.dat");
-
-                textAmount.setText("");
-                textLabel.setText("");
-
-                // Clear the JDateChooser text field
-                dateChooser.setDate(null);
-
-                updateOnlyTotalExpense();
-
-                HomePage.updateAvailableBalance();
-            } else {
-                showError("Please enter a valid numeric amount.");
-                textAmount.setText("");
-                textLabel.setText("");
             }
-        }
-    });
-        
-        
+        });
 
         // Add dateChooser to the horizontal and vertical groups
         layout.setHorizontalGroup(layout.createParallelGroup()
