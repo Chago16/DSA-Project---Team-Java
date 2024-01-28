@@ -167,9 +167,6 @@ public class ExpensePage {
                 .addComponent(btnAdd))
             .addComponent(totalExpenseLabel)
     );
-
-        Object[] row = new Object[3];
-        
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
