@@ -44,7 +44,7 @@ public class IncomePage {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
             Component comp = super.prepareRenderer(renderer, row, column);
             comp.setBackground(row % 2 == 0 ? Color.WHITE : super.getBackground());
-            Font boldFont = new Font("Poppins", Font.BOLD, 16);
+            Font boldFont = new Font("Poppins", Font.PLAIN, 16);
             comp.setFont(boldFont);
 
             if (column == 0 || column == 1) {
@@ -158,8 +158,6 @@ public class IncomePage {
                 .addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE) // Add dateChooser here
                 .addComponent(totalIncomeLabel)
         );
-
-        Object[] row = new Object[3];
 
         btnAdd.addActionListener(new ActionListener() {
             @Override
