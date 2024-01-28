@@ -159,6 +159,8 @@ public class IncomePage {
                 .addComponent(totalIncomeLabel)
         );
 
+        Object[] row = new Object[3];
+        
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
