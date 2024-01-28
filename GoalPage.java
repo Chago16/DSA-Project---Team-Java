@@ -71,7 +71,7 @@ public class GoalPage {
         savingsGoalPanel.setBackground(Color.decode("#FF914D"));
 
         // Creating label for savings goal
-        savingsGoalLabel = new JLabel("Savings Goal: $" + savingsGoal);
+        savingsGoalLabel = new JLabel("Savings Goal: " + savingsGoal);
         savingsGoalLabel.setFont(new Font("Poppins", Font.BOLD, 24));
         savingsGoalLabel.setForeground(Color.WHITE);
         savingsGoalLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));

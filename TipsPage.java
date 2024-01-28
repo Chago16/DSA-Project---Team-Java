@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class TipsPage {
-    private JPanel tipsPanel;
+    public JPanel tipsPanel;
     private JLabel imageLabel;
     private Timer slideshowTimer;
     private int currentImageIndex;
